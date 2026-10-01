@@ -49,8 +49,20 @@ jobs:
         run: pnpm run build
         working-directory: dsh
 
-      - name: Package desktop (win x64 dir, Electron 22)
-        run: pnpm package:desktop:win:x64:dir
+      - name: Create unsigned .env.windows (packaging requires it even for unsigned builds)
+        shell: bash
+        working-directory: dsh/apps/desktop
+        run: |
+          cat > .env.windows <<'ENVEOF'
+          DSH_DESKTOP_APP_ID=com.deepseek.harness
+          DSH_DESKTOP_AUTO_UPDATE_ENV=test
+          DOWNLOAD_TEST_RELEASE_ID=a1b2c3d4e5f60718293a4b5c6d7e8f90
+          DSH_DESKTOP_MANDATORY_UPDATE_TEST_ORIGIN=https://example.com
+          DSH_DESKTOP_MANDATORY_UPDATE_CONFIG='{"allowedAuthOrigins":["https://example.com"]}'
+          ENVEOF
+
+      - name: Package desktop (win x64 dir, unsigned, Electron 22)
+        run: pnpm --filter @deepseek-ai/dsh-desktop exec tsx scripts/package-target.ts win-x64 --unsigned --dir
         working-directory: dsh
 
       - name: Patch bundled ripgrep for Windows 8.1

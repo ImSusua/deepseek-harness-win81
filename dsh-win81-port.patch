@@ -1,7 +1,7 @@
 From b61da2ce871864a83b306ab9a7c495c762735e8d Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:24:37 +0800
-Subject: [PATCH 1/7] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82=E9=85=8D?=
+Subject: [PATCH 1/8] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82=E9=85=8D?=
  =?UTF-8?q?=20Windows=208.1=EF=BC=88Electron=2022=20/=20Node=2022.19=20/?=
  =?UTF-8?q?=20rg=20=E5=9E=AB=E7=89=87=EF=BC=89?=
 MIME-Version: 1.0
@@ -692,7 +692,7 @@ index f5b0ada..bf041a7 100644
 From f6766a1fb200cb79fe51f17c3ba8b9c708cca701 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:39:18 +0800
-Subject: [PATCH 2/7] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-auth?=
+Subject: [PATCH 2/8] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-auth?=
  =?UTF-8?q?=20=E7=9A=84=20Session.fetch=EF=BC=88Electron=2025+=20API?=
  =?UTF-8?q?=EF=BC=89?=
 MIME-Version: 1.0
@@ -732,7 +732,7 @@ index e7597a5..8a3ece5 100644
 From df3bc5896b765bd80c5cd84246e1bd38301e85fa Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:42:46 +0800
-Subject: [PATCH 3/7] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20package.?=
+Subject: [PATCH 3/8] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20package.?=
  =?UTF-8?q?json=20JSON=20=E5=90=88=E6=B3=95=E6=80=A7=EF=BC=88=E7=A7=BB?=
  =?UTF-8?q?=E9=99=A4=E8=A1=8C=E5=86=85=E6=B3=A8=E9=87=8A=EF=BC=8C=E4=BF=9D?=
  =?UTF-8?q?=E7=95=99=E5=BF=85=E8=A6=81=E9=80=97=E5=8F=B7=EF=BC=89?=
@@ -773,7 +773,7 @@ index 016c448..2225b9c 100644
 From 0ef4922ac31047f66eead3004989618a1006c913 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:52:23 +0800
-Subject: [PATCH 4/7] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
+Subject: [PATCH 4/8] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
  =?UTF-8?q?=E6=94=BE=E8=A1=8C=20electron?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -808,7 +808,7 @@ index b9cf05a..fafefee 100644
 From d49400eccc35716297d4ba8ade6ad306a3fe5ada Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:07:02 +0800
-Subject: [PATCH 5/7] =?UTF-8?q?win81-port:=20Electron=2022=20API=20?=
+Subject: [PATCH 5/8] =?UTF-8?q?win81-port:=20Electron=2022=20API=20?=
  =?UTF-8?q?=E9=80=82=E9=85=8D=EF=BC=8834=20=E4=B8=AA=20TS=20=E9=94=99?=
  =?UTF-8?q?=E8=AF=AF=E6=B8=85=E9=9B=B6=EF=BC=89?=
 MIME-Version: 1.0
@@ -1078,7 +1078,7 @@ index f590b8b..4cbafc0 100644
 From ff739e07d468fc00baedb98a17e06b1d63f291f3 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:39:11 +0800
-Subject: [PATCH 6/7] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
+Subject: [PATCH 6/8] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
  =?UTF-8?q?=E4=BD=99=2058=20=E4=B8=AA=E7=B1=BB=E5=9E=8B=E9=94=99=E8=AF=AF?=
  =?UTF-8?q?=EF=BC=88=E6=B5=8B=E8=AF=95=E6=A1=A9=E9=80=82=E9=85=8D=20+=20Pr?=
  =?UTF-8?q?ocess.once=20=E7=B1=BB=E5=9E=8B=E5=A2=9E=E5=BC=BA=EF=BC=89?=
@@ -1363,7 +1363,7 @@ index 6d2807c..f80adf2 100644
 From ce0fa58068fc580f3ad95beeeb0fbefaf1716773 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:50:40 +0800
-Subject: [PATCH 7/7] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
+Subject: [PATCH 7/8] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
  =?UTF-8?q?=E4=BD=99=209=20=E4=B8=AA=E7=B1=BB=E5=9E=8B=E9=94=99=E8=AF=AF?=
  =?UTF-8?q?=EF=BC=88helper=20=E5=8F=82=E6=95=B0=E6=94=BE=E5=AE=BD=20/=20?=
  =?UTF-8?q?=E8=BF=AD=E4=BB=A3=E7=B1=BB=E5=9E=8B=E4=BF=AE=E6=AD=A3=20/=20mo?=
@@ -1443,6 +1443,65 @@ index 76badaa..00b8fc6 100644
    expect(child.webContents.close).toHaveBeenCalledOnce()
    expect(owner.webContents.listenerCount('did-start-navigation')).toBe(0)
    expect(owner.listenerCount('closed')).toBe(0)
+-- 
+2.47.3
+
+
+From 5238c15c1dceee77819c56c3f3a0c16d5ad1471f Mon Sep 17 00:00:00 2001
+From: ImSusua <ImSusua@users.noreply.github.com>
+Date: Thu, 1 Oct 2026 21:13:45 +0800
+Subject: [PATCH 8/8] =?UTF-8?q?win81-port:=20keyboard.spec=20=E5=BC=BA?=
+ =?UTF-8?q?=E8=BD=AC=E5=8A=A0=20unknown=20=E4=B8=AD=E8=BD=AC=EF=BC=88Elect?=
+ =?UTF-8?q?ron=2022=20BrowserWindow=20=E7=B1=BB=E5=9E=8B=E9=87=8D=E5=8F=A0?=
+ =?UTF-8?q?=E4=B8=8D=E8=B6=B3=EF=BC=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ apps/desktop/tests/keyboard.spec.ts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/apps/desktop/tests/keyboard.spec.ts b/apps/desktop/tests/keyboard.spec.ts
+index 3d435e5..baf7c85 100644
+--- a/apps/desktop/tests/keyboard.spec.ts
++++ b/apps/desktop/tests/keyboard.spec.ts
+@@ -89,7 +89,7 @@ async function fixture(platform: 'macos' | 'windows' | 'linux' = 'macos') {
+   let current: WindowFixture | undefined = window
+   const updateMenu = vi.fn()
+   const updateOverlays = new DesktopUpdateOverlays()
+-  const keyboard = installFixture(() => current, root, platform, updateMenu, window => updateOverlays.input(window as BrowserWindow))
++  const keyboard = installFixture(() => current, root, platform, updateMenu, window => updateOverlays.input(window as unknown as BrowserWindow))
+   keyboard.attach(current)
+   onTestFinished(() => { keyboard.dispose() })
+   const handlers = new Map<string, (event: InvokeFixture, ...args: unknown[]) => unknown>(
+@@ -111,7 +111,7 @@ function updateOverlayFixture(f: Awaited<ReturnType<typeof fixture>>) {
+   })
+   Object.assign(f.contents, { insertCSS: vi.fn(async () => 'blur'), removeInsertedCSS: vi.fn(async () => {}) })
+   return () => {
+-    const overlay = f.updateOverlays.create(parent as BrowserWindow, 'test-overlay-preload', 'Update', false)
++    const overlay = f.updateOverlays.create(parent as unknown as BrowserWindow, 'test-overlay-preload', 'Update', false)
+     onTestFinished(() => { if (!overlay.isDestroyed()) overlay.destroy() })
+     expect(vi.spyOn(overlay, 'show')).not.toHaveBeenCalled()
+     return overlay
+@@ -198,7 +198,7 @@ it.each([false, true])('blocks approved browser guest input across update overla
+     { id: 'page.close', defaults: { 'desktop:macos': { code: 'KeyA', secondCode: 'KeyB', modifiers: [] } } },
+     { id: 'sidebar.left.toggle', defaults: desktopDefaults({ code: 'KeyK', modifiers: ['primary'] }) },
+   ])
+-  const guests = new DesktopBrowserGuests(() => undefined) as GuestsFixture
++  const guests = new DesktopBrowserGuests(() => undefined) as unknown as GuestsFixture
+   guests.bind(f.window, (guest, name) => f.keyboard.attachGuest(f.window, guest, name))
+   const reservation = guests.acquire(f.contents, 'session:test')
+   const { frame, guest } = browserGuest(reservation)
+@@ -711,7 +711,7 @@ it.each(['macos', 'windows', 'linux'] as const)('routes approved %s browser gues
+   const f = await fixture(platform)
+   const snapshot = await f.call<ShortcutConfigSnapshot>(DESKTOP_IPC.shortcutsGet,
+     [{ id: 'browser.new', defaults: desktopDefaults({ code: 'KeyT', modifiers: ['primary'] }) }])
+-  const guests = new DesktopBrowserGuests(() => undefined) as GuestsFixture
++  const guests = new DesktopBrowserGuests(() => undefined) as unknown as GuestsFixture
+   const attach = vi.fn((guest: ContentsFixture, name: DesktopBrowserLeaseId) => f.keyboard.attachGuest(f.window, guest, name))
+   guests.bind(f.window, attach)
+   const reservation = guests.acquire(f.contents, 'session:test')
 -- 
 2.47.3
 

@@ -1,7 +1,7 @@
 From b61da2ce871864a83b306ab9a7c495c762735e8d Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:24:37 +0800
-Subject: [PATCH 1/5] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82=E9=85=8D?=
+Subject: [PATCH 1/6] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82=E9=85=8D?=
  =?UTF-8?q?=20Windows=208.1=EF=BC=88Electron=2022=20/=20Node=2022.19=20/?=
  =?UTF-8?q?=20rg=20=E5=9E=AB=E7=89=87=EF=BC=89?=
 MIME-Version: 1.0
@@ -692,7 +692,7 @@ index f5b0ada..bf041a7 100644
 From f6766a1fb200cb79fe51f17c3ba8b9c708cca701 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:39:18 +0800
-Subject: [PATCH 2/5] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-auth?=
+Subject: [PATCH 2/6] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-auth?=
  =?UTF-8?q?=20=E7=9A=84=20Session.fetch=EF=BC=88Electron=2025+=20API?=
  =?UTF-8?q?=EF=BC=89?=
 MIME-Version: 1.0
@@ -732,7 +732,7 @@ index e7597a5..8a3ece5 100644
 From df3bc5896b765bd80c5cd84246e1bd38301e85fa Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:42:46 +0800
-Subject: [PATCH 3/5] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20package.?=
+Subject: [PATCH 3/6] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20package.?=
  =?UTF-8?q?json=20JSON=20=E5=90=88=E6=B3=95=E6=80=A7=EF=BC=88=E7=A7=BB?=
  =?UTF-8?q?=E9=99=A4=E8=A1=8C=E5=86=85=E6=B3=A8=E9=87=8A=EF=BC=8C=E4=BF=9D?=
  =?UTF-8?q?=E7=95=99=E5=BF=85=E8=A6=81=E9=80=97=E5=8F=B7=EF=BC=89?=
@@ -773,7 +773,7 @@ index 016c448..2225b9c 100644
 From 0ef4922ac31047f66eead3004989618a1006c913 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:52:23 +0800
-Subject: [PATCH 4/5] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
+Subject: [PATCH 4/6] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
  =?UTF-8?q?=E6=94=BE=E8=A1=8C=20electron?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -808,7 +808,7 @@ index b9cf05a..fafefee 100644
 From d49400eccc35716297d4ba8ade6ad306a3fe5ada Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:07:02 +0800
-Subject: [PATCH 5/5] =?UTF-8?q?win81-port:=20Electron=2022=20API=20?=
+Subject: [PATCH 5/6] =?UTF-8?q?win81-port:=20Electron=2022=20API=20?=
  =?UTF-8?q?=E9=80=82=E9=85=8D=EF=BC=8834=20=E4=B8=AA=20TS=20=E9=94=99?=
  =?UTF-8?q?=E8=AF=AF=E6=B8=85=E9=9B=B6=EF=BC=89?=
 MIME-Version: 1.0
@@ -1071,6 +1071,291 @@ index f590b8b..4cbafc0 100644
    })
    contextBridge.exposeInMainWorld('dshDesktopBoot', {
      ready: () => ipcRenderer.invoke(DESKTOP_IPC.boot) as Promise<unknown>,
+-- 
+2.47.3
+
+
+From ff739e07d468fc00baedb98a17e06b1d63f291f3 Mon Sep 17 00:00:00 2001
+From: ImSusua <ImSusua@users.noreply.github.com>
+Date: Thu, 1 Oct 2026 20:39:11 +0800
+Subject: [PATCH 6/6] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
+ =?UTF-8?q?=E4=BD=99=2058=20=E4=B8=AA=E7=B1=BB=E5=9E=8B=E9=94=99=E8=AF=AF?=
+ =?UTF-8?q?=EF=BC=88=E6=B5=8B=E8=AF=95=E6=A1=A9=E9=80=82=E9=85=8D=20+=20Pr?=
+ =?UTF-8?q?ocess.once=20=E7=B1=BB=E5=9E=8B=E5=A2=9E=E5=BC=BA=EF=BC=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- 新增 win81-electron22-types.d.ts：恢复 NodeJS.Process.once/on 宽签名
+  （Electron 22 类型收窄为仅 'loaded'，SIGINT/SIGTERM 处理无法编译）
+- platform-view.spec：mock owner 改为 addBrowserView/removeBrowserView 形状
+- microphone-permissions.spec：details 对象按 22 签名收窄
+- welcome-window.spec：移除 22 不存在的 backgroundMaterial 断言
+- main-startup.spec：protocol mock 从 handle 迁移到 registerStreamProtocol，
+  三个消费块改回调风格断言
+- main.ts：exactOptionalPropertyTypes 修复；console-message level 为数值(3=error)
+- keyboard.ts：did-start-navigation 22 为 4 参数签名
+---
+ .../scripts/win81-electron22-types.d.ts       |  9 +++
+ apps/desktop/src/keyboard.ts                  |  6 +-
+ apps/desktop/src/main.ts                      | 12 ++--
+ apps/desktop/tests/main-startup.spec.ts       | 62 ++++++++++++-------
+ .../tests/microphone-permissions.spec.ts      |  7 ++-
+ apps/desktop/tests/platform-view.spec.ts      |  4 +-
+ apps/desktop/tests/welcome-window.spec.ts     |  2 -
+ 7 files changed, 64 insertions(+), 38 deletions(-)
+ create mode 100644 apps/desktop/scripts/win81-electron22-types.d.ts
+
+diff --git a/apps/desktop/scripts/win81-electron22-types.d.ts b/apps/desktop/scripts/win81-electron22-types.d.ts
+new file mode 100644
+index 0000000..803ff0c
+--- /dev/null
++++ b/apps/desktop/scripts/win81-electron22-types.d.ts
+@@ -0,0 +1,9 @@
++// [win81-port] Electron 22 的类型把 NodeJS.Process.once/on 收窄为仅 'loaded' 事件，
++// 脚本里的 SIGINT/SIGTERM 处理无法编译。接口合并追加 Node 宽签名（不影响原重载）。
++declare namespace NodeJS {
++  interface Process {
++    on(event: string | symbol, listener: (...args: unknown[]) => void): this
++    once(event: string | symbol, listener: (...args: unknown[]) => void): this
++    removeListener(event: string | symbol, listener: (...args: unknown[]) => void): this
++  }
++}
+diff --git a/apps/desktop/src/keyboard.ts b/apps/desktop/src/keyboard.ts
+index c768faf..42c79fd 100644
+--- a/apps/desktop/src/keyboard.ts
++++ b/apps/desktop/src/keyboard.ts
+@@ -122,9 +122,9 @@ export function installDesktopShortcuts(
+       definitions = []; keys.clear(); recording = false
+       persistence.setDefinitions(null)
+     }
+-    // [win81-port] did-start-navigation 在 22 为位置参数（25+ 才有事件参数对象）。
+-    const navigation = (_event: Electron.Event, _url: string, _isInPlace: boolean, isMainFrame: boolean, isSameDocument: boolean): void => {
+-      if (isMainFrame && !isSameDocument) clear()
++    // [win81-port] did-start-navigation 在 22 为位置参数（url, isInPlace, isMainFrame；无 isSameDocument）。
++    const navigation = (_event: Electron.Event, _url: string, _isInPlace: boolean, isMainFrame: boolean): void => {
++      if (isMainFrame) clear()
+     }
+     const beforeInput = (event: Electron.Event, input: Input): void => {
+       const overlay = overlayInput(window)
+diff --git a/apps/desktop/src/main.ts b/apps/desktop/src/main.ts
+index 1fdbc19..3dde893 100644
+--- a/apps/desktop/src/main.ts
++++ b/apps/desktop/src/main.ts
+@@ -682,11 +682,9 @@ async function main(): Promise<void> {
+       try {
+         const upload = request.uploadData === undefined || request.uploadData.length === 0 ? undefined
+           : Buffer.concat(request.uploadData.map(part => part.bytes ?? Buffer.from(part.file ?? '', 'utf8')))
+-        const standard = new Request(request.url, {
+-          method: request.method,
+-          headers: request.headers,
+-          body: request.method === 'GET' || request.method === 'HEAD' ? undefined : upload,
+-        })
++        const init: RequestInit = { method: request.method, headers: request.headers }
++        if (request.method !== 'GET' && request.method !== 'HEAD' && upload !== undefined) init.body = upload
++        const standard = new Request(request.url, init)
+         const response = await serveSchemeRequest(standard)
+         const headers: Record<string, string> = {}
+         response.headers.forEach((value, name) => { headers[name] = value })
+@@ -1125,8 +1123,8 @@ async function main(): Promise<void> {
+     }
+     window.on('closed', () => { if (mainWindow === window) mainWindow = undefined })
+     window.webContents.on('console-message', (_event, level, message, lineNumber, sourceId) => {
+-      // [win81-port] Electron 22 为位置参数签名（25+ 才有 details 对象）。
+-      if (level !== 'error') return
++      // [win81-port] Electron 22 为位置参数签名（25+ 才有 details 对象），level 为数值：3 = error。
++      if (level !== 3) return
+       rendererConsole.push(`${sourceId}:${String(lineNumber)} ${message}`)
+     })
+     window.webContents.on('did-fail-load', (_event, code, description, url, isMainFrame) => {
+diff --git a/apps/desktop/tests/main-startup.spec.ts b/apps/desktop/tests/main-startup.spec.ts
+index b6b6fd4..92dd04c 100644
+--- a/apps/desktop/tests/main-startup.spec.ts
++++ b/apps/desktop/tests/main-startup.spec.ts
+@@ -217,7 +217,7 @@ const harness = await vi.hoisted(async () => {
+     set publishUpdate(value: (state: DesktopUpdateState) => DesktopUpdateState) { publishUpdate = value },
+     dialog: { showOpenDialog: vi.fn(), showErrorBox: vi.fn(), showMessageBox: vi.fn() },
+     openExternal: vi.fn(async () => {}),
+-    protocolHandle: vi.fn<(scheme: string, handler: (request: Request) => Response | Promise<Response>) => void>(),
++    protocolRegisterStream: vi.fn<(scheme: string, handler: (request: { url: string; method: string; headers: Record<string, string>; uploadData?: { bytes?: Buffer; file?: string }[] }, callback: (result: { statusCode?: number; headers?: Record<string, string>; data?: NodeJS.ReadableStream | string | Buffer }) => void) => void) => void>(),
+     applyRelease: vi.fn(() => { preparing.resolve(); return prepared.promise }),
+     disableAllPlugins: vi.fn(async () => {
+       pluginsEnabled = false
+@@ -293,7 +293,7 @@ vi.mock('electron', () => ({
+   session: { defaultSession: {
+     setPermissionCheckHandler: vi.fn(), setPermissionRequestHandler: vi.fn(), webRequest: { onBeforeSendHeaders: harness.socketHeaders },
+   } },
+-  protocol: { registerSchemesAsPrivileged: vi.fn(), handle: harness.protocolHandle },
++  protocol: { registerSchemesAsPrivileged: vi.fn(), registerStreamProtocol: harness.protocolRegisterStream },
+   powerMonitor: harness.powerMonitor,
+   Tray: harness.FakeTray,
+   nativeImage: { createFromPath: (path: string) => ({ path }) },
+@@ -437,6 +437,26 @@ afterEach(async () => {
+ })
+ 
+ describe('desktop main startup', () => {
++  // [win81-port] registerStreamProtocol 的 handler 为回调风格；桥接成可断言的结果对象。
++  function win81CallHandler(handler: (request: { url: string; method: string; headers: Record<string, string>; uploadData?: { bytes?: Buffer; file?: string }[] }, callback: (result: { statusCode?: number; headers?: Record<string, string>; data?: NodeJS.ReadableStream | string | Buffer }) => void) => void,
++    request: { url: string; method?: string; headers?: Record<string, string> }) {
++    let captured: { statusCode?: number; headers?: Record<string, string>; data?: NodeJS.ReadableStream | string | Buffer } | undefined
++    handler({ url: request.url, method: request.method ?? 'GET', headers: request.headers ?? {} }, (result) => { captured = result })
++    const text = async (): Promise<string> => {
++      const data = captured?.data
++      if (data === undefined) return ''
++      if (typeof data === 'string') return data
++      const chunks: Buffer[] = []
++      for await (const chunk of data as unknown as AsyncIterable<Buffer>) chunks.push(Buffer.from(chunk))
++      return Buffer.concat(chunks).toString('utf8')
++    }
++    return {
++      status: captured?.statusCode ?? 0,
++      header: (name: string): string | undefined => captured?.headers?.[name.toLowerCase()],
++      text,
++    }
++  }
++
+   it('routes shell update documents and assets through the registered main protocol handler', async () => {
+     const root = join(import.meta.dirname, '..')
+     vi.spyOn(harness.app, 'getAppPath').mockReturnValue(root)
+@@ -446,26 +466,26 @@ describe('desktop main startup', () => {
+     try {
+       await readyForUpdate()
+       const { protocol } = await import('electron')
+-      const handler = vi.mocked(protocol).handle.mock.calls.at(-1)?.[1]
++      const handler = vi.mocked(protocol).registerStreamProtocol.mock.calls.at(-1)?.[1]
+       if (handler === undefined) throw new Error('main did not register its protocol handler')
+       for (const [name, mime] of [
+         ['update-dialog.html', 'text/html'], ['update-dialog.css', 'text/css'], ['update-dialog.js', 'text/javascript'],
+         ['mandatory-update.html', 'text/html'], ['mandatory-update.css', 'text/css'], ['mandatory-update.js', 'text/javascript'],
+         ['update-close.svg', 'image/svg+xml'],
+       ] as const) {
+-        const response = await handler(new Request(`dsh-app://shell/${name}`))
++        const response = win81CallHandler(handler, { url: `dsh-app://shell/${name}` })
+         expect(response.status).toBe(200)
+-        expect(response.headers.get('content-type')).toContain(mime)
++        expect(response.header('content-type')).toContain(mime)
+         expect(await response.text()).toBe(readFileSync(join(root, 'renderer', name), 'utf8'))
+       }
+-      const head = await handler(new Request('dsh-app://shell/update-dialog.html', { method: 'HEAD' }))
++      const head = win81CallHandler(handler, { url: 'dsh-app://shell/update-dialog.html', method: 'HEAD' })
+       expect(head.status).toBe(200)
+       expect(await head.text()).toBe('')
+-      expect((await handler(new Request('dsh-app://shell/update-dialog.html', { method: 'POST' }))).status).toBe(405)
+-      expect((await handler(new Request('dsh-app://shell/%'))).status).toBe(400)
+-      expect((await handler(new Request('dsh-app://shell/%2e%2e%2fpackage.json'))).status).toBe(403)
+-      expect((await handler(new Request('dsh-app://shell/missing.html'))).status).toBe(404)
+-      expect((await handler(new Request('dsh-app://other/update-dialog.html'))).status).toBe(404)
++      expect(win81CallHandler(handler, { url: 'dsh-app://shell/update-dialog.html', method: 'POST' }).status).toBe(405)
++      expect(win81CallHandler(handler, { url: 'dsh-app://shell/%' }).status).toBe(400)
++      expect(win81CallHandler(handler, { url: 'dsh-app://shell/%2e%2e%2fpackage.json' }).status).toBe(403)
++      expect(win81CallHandler(handler, { url: 'dsh-app://shell/missing.html' }).status).toBe(404)
++      expect(win81CallHandler(handler, { url: 'dsh-app://other/update-dialog.html' }).status).toBe(404)
+     } finally {
+       vi.mocked(web.serveWebDocument).mockReset()
+     }
+@@ -474,14 +494,14 @@ describe('desktop main startup', () => {
+   it('serves shell dialogs and their assets without forwarding them to the Host', async () => {
+     await readyForUpdate()
+     const { serveWebDocument, forwardWebRequest } = await import('../src/web-document.ts')
+-    const handler = harness.protocolHandle.mock.calls[0]![1]
++    const handler = harness.protocolRegisterStream.mock.calls[0]![1]
+     for (const file of ['update-dialog.html', 'update-dialog.js', 'update-dialog.css', 'update-close.svg', 'mandatory-update.html']) {
+-      const request = new Request(`dsh-app://shell/${file}`)
+-      await handler(request)
+-      expect(serveWebDocument).toHaveBeenLastCalledWith(request, join('desktop-test-app', 'renderer'))
++      const request = { url: `dsh-app://shell/${file}` }
++      win81CallHandler(handler, request)
++      expect(serveWebDocument).toHaveBeenLastCalledWith(expect.objectContaining({ url: request.url }), join('desktop-test-app', 'renderer'))
+     }
+     expect(forwardWebRequest).not.toHaveBeenCalled()
+-    expect((await handler(new Request('dsh-app://unknown/update-dialog.html'))).status).toBe(404)
++    expect(win81CallHandler(handler, { url: 'dsh-app://unknown/update-dialog.html' }).status).toBe(404)
+   })
+ 
+   it('installs hidden native DevTools shortcuts in the macOS application menu', async () => {
+@@ -720,11 +740,11 @@ describe('desktop main startup', () => {
+     vi.mocked(serveWebDocument).mockResolvedValue(new Response('shell document'))
+     await import('../src/main.ts')
+     await harness.preparing.promise
+-    const handler = harness.protocolHandle.mock.calls[0]![1]
+-    const request = new Request('dsh-app://shell/update-dialog.html')
+-    expect(await (await handler(request)).text()).toBe('shell document')
+-    expect(serveWebDocument).toHaveBeenCalledWith(request, join('desktop-test-app', 'renderer'))
+-    expect((await handler(new Request('dsh-app://foreign/index.html'))).status).toBe(404)
++    const handler = harness.protocolRegisterStream.mock.calls[0]![1]
++    const response = win81CallHandler(handler, { url: 'dsh-app://shell/update-dialog.html' })
++    expect(await response.text()).toBe('shell document')
++    expect(serveWebDocument).toHaveBeenCalledWith(expect.objectContaining({ url: 'dsh-app://shell/update-dialog.html' }), join('desktop-test-app', 'renderer'))
++    expect(win81CallHandler(handler, { url: 'dsh-app://foreign/index.html' }).status).toBe(404)
+   })
+ 
+   it.each(['darwin', 'win32'] as const)('relays the %s fullscreen state on transitions and after each load', async (platform) => {
+diff --git a/apps/desktop/tests/microphone-permissions.spec.ts b/apps/desktop/tests/microphone-permissions.spec.ts
+index 200a980..db75db1 100644
+--- a/apps/desktop/tests/microphone-permissions.spec.ts
++++ b/apps/desktop/tests/microphone-permissions.spec.ts
+@@ -46,7 +46,8 @@ it.each([true, false])('waits for the first macOS authorization decision: %s', a
+   expect(done).toHaveBeenCalledExactlyOnceWith(allowed)
+ })
+ it('requests macOS microphone access and reports operating-system rejection', async () => {
+-  const f = fixture(), done = vi.fn(), details = { isMainFrame: true, requestingUrl: 'dsh-app://app/', mediaTypes: ['audio'] }
++  const f = fixture(), done = vi.fn()
++  const details = { isMainFrame: true, requestingUrl: 'dsh-app://app/', mediaTypes: ['audio'] } as unknown as Parameters<typeof f.request>[3]
+   f.request(f.primary, 'media', done, details)
+   await vi.waitFor(() => { expect(done).toHaveBeenLastCalledWith(true) })
+   expect(access.askForMediaAccess).toHaveBeenCalledWith('microphone')
+@@ -54,10 +55,10 @@ it('requests macOS microphone access and reports operating-system rejection', as
+   f.request(f.primary, 'media', done, details)
+   await vi.waitFor(() => { expect(done).toHaveBeenLastCalledWith(false) })
+   for (const denied of [{ ...details, mediaTypes: ['audio', 'video'] }, { ...details, mediaTypes: [] },
+-    { ...details, isMainFrame: false }, { isMainFrame: true, requestingUrl: 'dsh-app://app/' }]) {
++    { ...details, isMainFrame: false }, { isMainFrame: true, requestingUrl: 'dsh-app://app/' }] as unknown as Parameters<typeof f.request>[3]) {
+     f.request(f.primary, 'media', done, denied); expect(done).toHaveBeenLastCalledWith(false)
+   }
+-  f.request(f.primary, 'clipboard-sanitized-write', done, details)
++  f.request(f.primary, 'clipboard-sanitized-write', done, details as unknown as Parameters<typeof f.request>[3])
+   expect(done).toHaveBeenLastCalledWith(true)
+ })
+ it.each(['win32', 'linux'] as const)('leaves system authorization to Chromium on %s', (platform) => {
+diff --git a/apps/desktop/tests/platform-view.spec.ts b/apps/desktop/tests/platform-view.spec.ts
+index f62987d..76badaa 100644
+--- a/apps/desktop/tests/platform-view.spec.ts
++++ b/apps/desktop/tests/platform-view.spec.ts
+@@ -48,7 +48,7 @@ afterEach(() => {
+ function setup() {
+   const removeChildView = vi.fn()
+   const owner = Object.assign(new EventEmitter(), {
+-    webContents: new EventEmitter(), contentView: { addChildView: vi.fn(), removeChildView }, isDestroyed: () => false,
++    webContents: new EventEmitter(), addBrowserView: vi.fn(), removeBrowserView, isDestroyed: () => false,
+   })
+   const manager = new DesktopPlatformView('/bundled/preload.cjs', () => 'en_US', 'darwin')
+   manager.setSession({ origin: 'https://platform.deepseek.com', userId: 'fixture-user' as AccountUserId, token: 'fixture-secret' })
+@@ -152,7 +152,7 @@ it('injects the deployment and client identity headers only at the Platform orig
+ it('samples the language and UTC offset on every Platform request', async () => {
+   let locale: 'en_US' | 'zh_CN' = 'en_US'
+   const owner = Object.assign(new EventEmitter(), {
+-    webContents: new EventEmitter(), contentView: { addChildView: vi.fn(), removeChildView: vi.fn() }, isDestroyed: () => false,
++    webContents: new EventEmitter(), addBrowserView: vi.fn(), removeBrowserView: vi.fn(), isDestroyed: () => false,
+   })
+   const manager = new DesktopPlatformView('/bundled/preload.cjs', () => locale, 'darwin')
+   manager.setSession({ origin: 'https://platform.deepseek.com', userId: null, token: 'fixture-secret' })
+diff --git a/apps/desktop/tests/welcome-window.spec.ts b/apps/desktop/tests/welcome-window.spec.ts
+index 6d2807c..f80adf2 100644
+--- a/apps/desktop/tests/welcome-window.spec.ts
++++ b/apps/desktop/tests/welcome-window.spec.ts
+@@ -66,12 +66,10 @@ describe('desktop welcome window', () => {
+       expect(options.visualEffectState).toBe('active')
+       expect(options.trafficLightPosition).toEqual({ x: 21, y: 21 })
+     } else if (platform === 'win32') {
+-      expect(options.backgroundMaterial).toBe('acrylic')
+       expect(options.titleBarOverlay).toMatchObject({ height: 42 })
+     } else {
+       expect(options.backgroundColor).toBe('#FFFFFF')
+       expect(options.vibrancy).toBeUndefined()
+-      expect(options.backgroundMaterial).toBeUndefined()
+     }
+   })
+ 
 -- 
 2.47.3
 

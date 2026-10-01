@@ -1,9 +1,9 @@
 From b61da2ce871864a83b306ab9a7c495c762735e8d Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:24:37 +0800
-Subject: [PATCH] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82=E9=85=8D=20Wi?=
- =?UTF-8?q?ndows=208.1=EF=BC=88Electron=2022=20/=20Node=2022.19=20/=20rg?=
- =?UTF-8?q?=20=E5=9E=AB=E7=89=87=EF=BC=89?=
+Subject: [PATCH 1/2] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82=E9=85=8D?=
+ =?UTF-8?q?=20Windows=208.1=EF=BC=88Electron=2022=20/=20Node=2022.19=20/?=
+ =?UTF-8?q?=20rg=20=E5=9E=AB=E7=89=87=EF=BC=89?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -685,6 +685,46 @@ index f5b0ada..bf041a7 100644
 -}
 +}
 \ No newline at end of file
+-- 
+2.47.3
+
+
+From f6766a1fb200cb79fe51f17c3ba8b9c708cca701 Mon Sep 17 00:00:00 2001
+From: ImSusua <ImSusua@users.noreply.github.com>
+Date: Thu, 1 Oct 2026 19:39:18 +0800
+Subject: [PATCH 2/2] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-auth?=
+ =?UTF-8?q?=20=E7=9A=84=20Session.fetch=EF=BC=88Electron=2025+=20API?=
+ =?UTF-8?q?=EF=BC=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Electron 22 无 Session.fetch；改用 undici 全局 fetch + 从登录 Session
+读取 Cookie 注入请求头，保持 credentials:'include' 与 redirect:'error' 语义。
+---
+ apps/desktop/src/policy-test-auth.ts | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/apps/desktop/src/policy-test-auth.ts b/apps/desktop/src/policy-test-auth.ts
+index e7597a5..8a3ece5 100644
+--- a/apps/desktop/src/policy-test-auth.ts
++++ b/apps/desktop/src/policy-test-auth.ts
+@@ -58,7 +58,14 @@ export class DesktopPolicyTestAuth {
+       || url.username !== '' || url.password !== '') {
+       return Promise.reject(new Error('desktop policy: disallowed authenticated request'))
+     }
+-    return this.browserSession.fetch(url.href, { ...init, credentials: 'include', redirect: 'error', cache: 'no-store' })
++    // [win81-port] Session.fetch 仅存在于 Electron 25+；Electron 22 上改用 undici 全局
++    // fetch 并手动携带登录 Session 的 Cookie（等价 credentials:'include' 语义）。
++    return this.browserSession.cookies.get({ url: url.href }).then((cookies) => {
++      const headers = new Headers(init?.headers)
++      const cookieHeader = cookies.map((cookie) => `${cookie.name}=${cookie.value}`).join('; ')
++      if (cookieHeader !== '') headers.set('cookie', cookieHeader)
++      return globalThis.fetch(url.href, { ...init, headers, redirect: 'error', cache: 'no-store' } as RequestInit)
++    })
+   }
+ 
+   /**
 -- 
 2.47.3
 

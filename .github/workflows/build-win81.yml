@@ -1,0 +1,69 @@
+name: build-win81
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: windows-2022
+    env:
+      DSH_WIN81: '1'
+    steps:
+      - name: Checkout this repo (patches)
+        uses: actions/checkout@v4
+
+      - name: Checkout upstream source
+        uses: actions/checkout@v4
+        with:
+          repository: deepseek-ai/deepseek-harness
+          ref: master
+          path: dsh
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          package_json_file: dsh/package.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.19.0
+          cache: pnpm
+          cache-dependency-path: dsh/pnpm-lock.yaml
+
+      - name: Apply win81 port patch
+        shell: bash
+        run: |
+          git -C dsh apply --check ../dsh-win81-port.patch
+          git -C dsh apply ../dsh-win81-port.patch
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+        working-directory: dsh
+
+      - name: Build workspace
+        run: pnpm run build
+        working-directory: dsh
+
+      - name: Package desktop (win x64 dir, Electron 22)
+        run: pnpm package:desktop:win:x64:dir
+        working-directory: dsh
+
+      - name: Patch bundled ripgrep for Windows 8.1
+        shell: bash
+        run: |
+          DIR=$(find . -type d -name win-unpacked | head -1)
+          echo "win-unpacked: $DIR"
+          node dsh/apps/desktop/scripts/win81-patch-rg.mjs "$DIR"
+
+      - name: Package portable zip
+        shell: pwsh
+        run: |
+          $dir = Get-ChildItem -Recurse -Directory -Filter win-unpacked | Select-Object -First 1
+          Compress-Archive -Path (Join-Path $dir.FullName '*') -DestinationPath deepseek-harness-win81-x64-portable.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dsh-win81-portable
+          path: deepseek-harness-win81-x64-portable.zip

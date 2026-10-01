@@ -1,0 +1,690 @@
+From b61da2ce871864a83b306ab9a7c495c762735e8d Mon Sep 17 00:00:00 2001
+From: ImSusua <ImSusua@users.noreply.github.com>
+Date: Thu, 1 Oct 2026 19:24:37 +0800
+Subject: [PATCH] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82=E9=85=8D=20Wi?=
+ =?UTF-8?q?ndows=208.1=EF=BC=88Electron=2022=20/=20Node=2022.19=20/=20rg?=
+ =?UTF-8?q?=20=E5=9E=AB=E7=89=87=EF=BC=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- electron ^44.0.0 -> 22.3.27（Chromium 109，最后支持 Win7/8/8.1 的 Electron）
+- 主进程 Node 16 缺失的 fetch 全局用 undici 5 垫齐（win81-compat.ts，上游版本 no-op）
+- 内嵌运行时 node 24.21.0 -> 22.19.0（8.1 兼容构建，lock.json 含全平台 sha256）
+- 终端面板：ConPTY 可用性预检，8.1 上给出可诊断错误（工具执行走 child_process，不受影响）
+- 打包：DSH_WIN81=1 切换 win81 配置（产物名 -win81-x64，unsigned，自动取 Electron 22）
+- rg.exe：构建后把 bcryptprimitives!ProcessPrng 导入重定向到 win81rng_shim.dll（转发 RtlGenRandom）
+- CI：.github/workflows/build-win81.yml，产出 portable zip
+---
+ .github/workflows/build-win81.yml             |  48 ++++++++++++++++++
+ apps/desktop/package.json                     |   3 +-
+ .../desktop/resources/win81/win81rng_shim.dll | Bin 0 -> 44544 bytes
+ .../scripts/electron-builder-config.win81.mjs |  19 +++++++
+ apps/desktop/scripts/package-target.ts        |   3 +-
+ apps/desktop/scripts/win81-patch-rg.mjs       |  40 +++++++++++++++
+ apps/desktop/src/main.ts                      |   4 +-
+ apps/desktop/src/win81-compat.ts              |  17 +++++++
+ .../subprocess/subprocess-local/src/index.ts  |  16 +++++-
+ scripts/primary-runtime/lock.json             |  14 ++---
+ 10 files changed, 152 insertions(+), 12 deletions(-)
+ create mode 100644 .github/workflows/build-win81.yml
+ create mode 100755 apps/desktop/resources/win81/win81rng_shim.dll
+ create mode 100644 apps/desktop/scripts/electron-builder-config.win81.mjs
+ create mode 100644 apps/desktop/scripts/win81-patch-rg.mjs
+ create mode 100644 apps/desktop/src/win81-compat.ts
+
+diff --git a/.github/workflows/build-win81.yml b/.github/workflows/build-win81.yml
+new file mode 100644
+index 0000000..225beb6
+--- /dev/null
++++ b/.github/workflows/build-win81.yml
+@@ -0,0 +1,48 @@
++name: build-win81
++
++on:
++  workflow_dispatch:
++  push:
++    branches: [win81-port]
++
++jobs:
++  build:
++    runs-on: windows-2022
++    env:
++      DSH_WIN81: '1'
++    steps:
++      - uses: actions/checkout@v4
++
++      - uses: pnpm/action-setup@v4
++
++      - uses: actions/setup-node@v4
++        with:
++          node-version: 22.19.0
++          cache: pnpm
++
++      - name: Install dependencies
++        run: pnpm install --no-frozen-lockfile
++
++      - name: Build workspace
++        run: pnpm run build
++
++      - name: Package desktop (win x64, dir)
++        run: pnpm package:desktop:win:x64:dir
++
++      - name: Patch bundled ripgrep for Windows 8.1
++        shell: bash
++        run: |
++          DIR=$(find . -type d -name win-unpacked | head -1)
++          echo "win-unpacked: $DIR"
++          node apps/desktop/scripts/win81-patch-rg.mjs "$DIR"
++
++      - name: Package portable zip
++        shell: pwsh
++        run: |
++          $dir = Get-ChildItem -Recurse -Directory -Filter win-unpacked | Select-Object -First 1
++          Compress-Archive -Path (Join-Path $dir.FullName '*') -DestinationPath deepseek-harness-win81-x64-portable.zip
++
++      - uses: actions/upload-artifact@v4
++        with:
++          name: dsh-win81-portable
++          path: deepseek-harness-win81-x64-portable.zip
+diff --git a/apps/desktop/package.json b/apps/desktop/package.json
+index 3eaf57f..016c448 100644
+--- a/apps/desktop/package.json
++++ b/apps/desktop/package.json
+@@ -42,6 +42,7 @@
+   },
+   "dependencies": {
+     "electron-updater": "^6.8.9",
++    "undici": "^5.28.5", // [win81-port] Electron 22 主进程 Node 16 无 fetch 全局，用 undici 5 垫
+     "semver": "^7.8.5",
+     "ws": "^8.21.0",
+     "@deepseek-ai/dsh-api-gateway": "workspace:*",
+@@ -60,7 +61,7 @@
+     "@types/semver": "^7.8.0",
+     "app-builder-lib": "26.15.3",
+     "cos-nodejs-sdk-v5": "3.0.0",
+-    "electron": "^44.0.0",
++    "electron": "22.3.27", // [win81-port] Chromium 109 = Win8.1 上限
+     "electron-builder": "^26.15.3",
+     "extract-zip": "^2.0.1",
+     "js-yaml": "^4.2.0",
+diff --git a/apps/desktop/resources/win81/win81rng_shim.dll b/apps/desktop/resources/win81/win81rng_shim.dll
+new file mode 100755
+index 0000000000000000000000000000000000000000..30ea8d911dfa43af1f04ac476c580105738f50b0
+GIT binary patch
+literal 44544
+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
+Tahwcf^VpdfeLf5RSq=PuF;EK6
+
+literal 0
+HcmV?d00001
+
+diff --git a/apps/desktop/scripts/electron-builder-config.win81.mjs b/apps/desktop/scripts/electron-builder-config.win81.mjs
+new file mode 100644
+index 0000000..7e8de92
+--- /dev/null
++++ b/apps/desktop/scripts/electron-builder-config.win81.mjs
+@@ -0,0 +1,19 @@
++// [win81-port] Windows 8.1 (x64) 打包配置包装器。
++// 前置条件：本分支已将 apps/desktop 的 electron 钉到 22.3.27（Chromium 109，
++// 是最后支持 Windows 7/8/8.1 的 Electron 大版本），内嵌 Node 运行时钉到 22.19.0。
++// 用法（Windows 构建机 / CI）:
++//   DSH_WIN81=1 pnpm --filter @deepseek-ai/dsh-desktop run package:win:x64:dir
++//   node scripts/win81-patch-rg.mjs dist/win-unpacked/resources/runtime
++// 变化点：
++//   1) 产物名追加 -win81-x64；
++//   2) 移除 electronDist 预取，electron-builder 按 devDependencies 自动取 22.3.27；
++//   3) 关闭 differentialPackage（我们事后要修改 rg.exe，避免与块映射不一致）。
++import { createElectronBuilderConfig } from './electron-builder-config.mjs'
++
++export function createWin81ElectronBuilderConfig(env = process.env) {
++  const config = createElectronBuilderConfig({ ...env, DSH_DESKTOP_UNSIGNED: '1', DSH_WIN81: '1' })
++  config.artifactName = 'deepseek-harness-${version}-win81-x64.${ext}'
++  delete config.electronDist
++  config.nsis = { ...(config.nsis ?? {}), differentialPackage: false }
++  return config
++}
+diff --git a/apps/desktop/scripts/package-target.ts b/apps/desktop/scripts/package-target.ts
+index 62f4fcb..6f81475 100644
+--- a/apps/desktop/scripts/package-target.ts
++++ b/apps/desktop/scripts/package-target.ts
+@@ -266,7 +266,8 @@ export function desktopElectronBuilderArguments(
+     'exec',
+     'electron-builder',
+     '--config',
+-    'electron-builder.config.mjs',
++    // [win81-port] DSH_WIN81=1 时使用 Windows 8.1 打包配置（Electron 22 + 垫片）
++    process.env.DSH_WIN81 === '1' ? 'electron-builder.config.win81.mjs' : 'electron-builder.config.mjs',
+     target.builderPlatform,
+     ...(artifact === undefined ? [] : [artifact.format]),
+     target.builderArch,
+diff --git a/apps/desktop/scripts/win81-patch-rg.mjs b/apps/desktop/scripts/win81-patch-rg.mjs
+new file mode 100644
+index 0000000..13ad8ba
+--- /dev/null
++++ b/apps/desktop/scripts/win81-patch-rg.mjs
+@@ -0,0 +1,40 @@
++// [win81-port] 修复内置 ripgrep：rg.exe（Rust 1.78+ 构建）静态导入
++// bcryptprimitives!ProcessPrng（Windows 10 1809+ 才有），在 8.1 上加载即败。
++// 做法：把导入表里的 DLL 名字符串原位改写为 win81rng_shim.dll，并把垫片放到旁边。
++// 垫片导出同名 ProcessPrng，转发到 advapi32!SystemFunction036 (RtlGenRandom)。
++// 用法: node win81-patch-rg.mjs <扫描根目录，例如 dist/win-unpacked>
++import { readdirSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs'
++import { join, dirname } from 'node:path'
++import { fileURLToPath } from 'node:url'
++
++const OLD = Buffer.from('bcryptprimitives.dll\0', 'latin1')
++const NEW = Buffer.from('win81rng_shim.dll\0\0', 'latin1') // 同 20 字节槽位，含 NUL
++const SHIM = join(dirname(fileURLToPath(import.meta.url)), '..', 'resources', 'win81', 'win81rng_shim.dll')
++
++function walkRgExe(dir, out = []) {
++  for (const entry of readdirSync(dir, { withFileTypes: true })) {
++    const path = join(dir, entry.name)
++    if (entry.isDirectory()) walkRgExe(path, out)
++    else if (entry.name === 'rg.exe') out.push(path)
++  }
++  return out
++}
++
++const root = process.argv[2]
++if (!root) { console.error('usage: node win81-patch-rg.mjs <root>'); process.exit(1) }
++const targets = walkRgExe(root)
++if (targets.length === 0) console.warn('[win81-port] 未找到 rg.exe（运行时树可能尚未包含 ripgrep）')
++let patched = 0
++for (const exe of targets) {
++  const buf = readFileSync(exe)
++  if (buf.includes(NEW)) { console.log('[win81-port] 已补丁，跳过:', exe); continue }
++  const idx = buf.indexOf(OLD)
++  if (idx < 0) { console.log('[win81-port] 无 bcryptprimitives 导入，跳过:', exe); continue }
++  if (buf.indexOf(OLD, idx + 1) >= 0) throw new Error(`[win81-port] 多处命中，拒绝盲改: ${exe}`)
++  NEW.copy(buf, idx)
++  writeFileSync(exe, buf)
++  copyFileSync(SHIM, join(dirname(exe), 'win81rng_shim.dll'))
++  patched++
++  console.log('[win81-port] 已补丁:', exe)
++}
++console.log(`[win81-port] rg.exe 补丁完成: ${patched}/${targets.length}`)
+diff --git a/apps/desktop/src/main.ts b/apps/desktop/src/main.ts
+index b4b8153..3c3381d 100644
+--- a/apps/desktop/src/main.ts
++++ b/apps/desktop/src/main.ts
+@@ -15,13 +15,13 @@ import {
+   powerMonitor,
+   nativeImage,
+   nativeTheme,
+-  net,
+   protocol,
+   session,
+   shell,
+   type IpcMainInvokeEvent,
+   type MenuItemConstructorOptions,
+ } from 'electron'
++import './win81-compat.ts'
+ import { resolveDesktopPaths } from './paths.ts'
+ import { DesktopProjectManager } from './project-manager.ts'
+ import { DesktopHostFatalError, DesktopHostProcess, DesktopHostUncleanExitError } from './host-process.ts'
+@@ -452,7 +452,7 @@ async function main(): Promise<void> {
+         hostUrl = ready.url
+         if (ready.injections === undefined) throw new Error('Desktop Host did not provide boot injections')
+         injections = ready.injections
+-        welcomeBackend = await connectDesktopWelcome(ready.url, (input, init) => net.fetch(input, init), async () => (await session.defaultSession.cookies.get({ url: ready.url })).map(cookie => `${cookie.name}=${cookie.value}`).join('; '))
++        welcomeBackend = await connectDesktopWelcome(ready.url, (input, init) => globalThis.fetch(input, init), async () => (await session.defaultSession.cookies.get({ url: ready.url })).map(cookie => `${cookie.name}=${cookie.value}`).join('; '))
+         analyticsEnabled = await welcomeBackend.analyticsEnabled().catch(() => false)
+         if (!reportedLaunch) { reportedLaunch = true; void track('desktop_app_launch', {}) }
+         stopAccount?.()
+diff --git a/apps/desktop/src/win81-compat.ts b/apps/desktop/src/win81-compat.ts
+new file mode 100644
+index 0000000..91b6d4f
+--- /dev/null
++++ b/apps/desktop/src/win81-compat.ts
+@@ -0,0 +1,17 @@
++/**
++ * [win81-port] Electron 22 (Chromium 109) 的主进程内嵌 Node 16，缺少 Node 18+ 的
++ * fetch / Headers / Response / Request 全局对象；web-document 的流式插件代理与
++ * main 的后端连接都依赖它们。这里用 undici 5（支持 Node 14+）补齐全局。
++ * 在 Electron 25+（Node 18+，即上游默认版本）上为 no-op，零影响。
++ */
++import { fetch, Headers, Response, Request, FormData } from 'undici'
++
++const g = globalThis as unknown as Record<string, unknown>
++
++if (typeof g.fetch !== 'function') {
++  g.fetch = fetch
++  g.Headers = Headers
++  g.Response = Response
++  g.Request = Request
++  g.FormData = FormData
++}
+diff --git a/packages/subprocess/subprocess-local/src/index.ts b/packages/subprocess/subprocess-local/src/index.ts
+index 7b11f4f..3f743bb 100644
+--- a/packages/subprocess/subprocess-local/src/index.ts
++++ b/packages/subprocess/subprocess-local/src/index.ts
+@@ -10,7 +10,7 @@
+ 
+ import { constants } from 'node:fs'
+ import { access, stat } from 'node:fs/promises'
+-import { userInfo } from 'node:os'
++import { release as osRelease, userInfo } from 'node:os'
+ import { delimiter, extname, isAbsolute, resolve } from 'node:path'
+ import type { Duplex } from 'node:stream'
+ import { Context } from '@deepseek-ai/cordis'
+@@ -281,6 +281,14 @@ export class LocalSubprocessRuntime extends SubprocessRuntime {
+     }
+     let scope: ReturnType<typeof prepareLinuxTerminalScope> | undefined
+     let terminal: NodePty.IPty
++    if (process.platform === 'win32' && !isConptyAvailable()) {
++      // [win81-port] ConPTY（CreatePseudoConsole）自 Windows 10 1709 才内置；
++      // 在 Windows 8.1 上给出可诊断的失败，而不是 node-pty 的深层异常。
++      // 仅影响交互式终端面板；普通工具执行（child_process + Job 容器）不受影响。
++      throw new Error(
++        `subprocess-local: interactive terminals require ConPTY (Windows 10 1709+); host is ${osRelease()} [win81-port]`,
++      )
++    }
+     try {
+       scope = containmentMode === 'linux-scope'
+         ? prepareLinuxTerminalScope(launch, { ...activity?.env ?? env, PWD: spec.cwd, TERM: spec.terminalType })
+@@ -338,3 +346,9 @@ function environmentValue(env: NodeJS.ProcessEnv, name: 'PATH' | 'PATHEXT'): str
+ }
+ 
+ export default LocalSubprocessRuntime
++
++// [win81-port] ConPTY 可用性探测：Windows 10 1709 (build 16299) 起内置。
++function isConptyAvailable(): boolean {
++  const build = Number(osRelease().split('.')[2] ?? '0')
++  return Number.isFinite(build) && build >= 16299
++}
+diff --git a/scripts/primary-runtime/lock.json b/scripts/primary-runtime/lock.json
+index f5b0ada..bf041a7 100644
+--- a/scripts/primary-runtime/lock.json
++++ b/scripts/primary-runtime/lock.json
+@@ -1,11 +1,11 @@
+ {
+-  "nodeVersion": "24.21.0",
++  "nodeVersion": "22.19.0",
+   "pythonVersion": "3.12.14",
+   "pythonRelease": "20260901",
+   "targets": {
+     "win-x64": {
+       "nodeArchive": "win-x64.zip",
+-      "nodeSha256": "158f7685b44de51f6c0df1d153526cbcd3e1bc739a8dfc607721cef75de9e541",
++      "nodeSha256": "ea3fad0e67a991d8477d8c01344b56e69c676ccb733f065b22436994b1253f86",
+       "pythonTarget": "x86_64-pc-windows-msvc",
+       "pythonSha256": "7c45c9622400d578709a9b2cddbe8124cc21d382409d9f13406d706d28e31b14",
+       "wheels": [
+@@ -29,7 +29,7 @@
+     },
+     "mac-arm64": {
+       "nodeArchive": "darwin-arm64.tar.gz",
+-      "nodeSha256": "bed7eea5325e1108f32ce5228ddd6a5f0f08a499ee42aa7442aea583702f6057",
++      "nodeSha256": "c59006db713c770d6ec63ae16cb3edc11f49ee093b5c415d667bb4f436c6526d",
+       "pythonTarget": "aarch64-apple-darwin",
+       "pythonSha256": "81a359f1cfadd4da11766534c5913791cea55f26e1bb902cacd2a531bb1e4b2b",
+       "wheels": [
+@@ -53,7 +53,7 @@
+     },
+     "mac-x64": {
+       "nodeArchive": "darwin-x64.tar.gz",
+-      "nodeSha256": "1462cb3b3046b815cf8ea436d3da450ec1a9f11dac7e5a46b0ada5305d7e8097",
++      "nodeSha256": "3cfed4795cd97277559763c5f56e711852d2cc2420bda1cea30c8aa9ac77ce0c",
+       "pythonTarget": "x86_64-apple-darwin",
+       "pythonSha256": "65b195c9cedc1fef6767f044f9822069adbd1bd9204d424ece4628776fdc04bb",
+       "wheels": [
+@@ -77,7 +77,7 @@
+     },
+     "linux-x64": {
+       "nodeArchive": "linux-x64.tar.gz",
+-      "nodeSha256": "6e1db87ef58b8819e5d5402eff1536491b18edd8eb7bee5ef7897876e88dc5ff",
++      "nodeSha256": "d36e56998220085782c0ca965f9d51b7726335aed2f5fc7321c6c0ad233aa96d",
+       "pythonTarget": "x86_64-unknown-linux-gnu",
+       "pythonSha256": "72748da13197c1fb161e3afeef20a6a385ff24f2165e6e2758e47008e7faba4c",
+       "wheels": [
+@@ -101,7 +101,7 @@
+     },
+     "linux-arm64": {
+       "nodeArchive": "linux-arm64.tar.gz",
+-      "nodeSha256": "724282c3b43aec998aa9527380465b45d229e021b58035f5f4f63095eabfe5d5",
++      "nodeSha256": "d32817b937219b8f131a28546035183d79e7fd17a86e38ccb8772901a7cd9009",
+       "pythonTarget": "aarch64-unknown-linux-gnu",
+       "pythonSha256": "577b4bec0793ad1ff0cbff9adbd0df078eddde38a4c41bf5d83ad381a85ee39d",
+       "wheels": [
+@@ -177,4 +177,4 @@
+     "typing_extensions": "4.16.0",
+     "et_xmlfile": "2.0.0"
+   }
+-}
++}
+\ No newline at end of file
+-- 
+2.47.3
+

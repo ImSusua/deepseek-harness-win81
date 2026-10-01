@@ -1,7 +1,7 @@
 From b61da2ce871864a83b306ab9a7c495c762735e8d Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:24:37 +0800
-Subject: [PATCH 1/4] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82=E9=85=8D?=
+Subject: [PATCH 1/5] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82=E9=85=8D?=
  =?UTF-8?q?=20Windows=208.1=EF=BC=88Electron=2022=20/=20Node=2022.19=20/?=
  =?UTF-8?q?=20rg=20=E5=9E=AB=E7=89=87=EF=BC=89?=
 MIME-Version: 1.0
@@ -692,7 +692,7 @@ index f5b0ada..bf041a7 100644
 From f6766a1fb200cb79fe51f17c3ba8b9c708cca701 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:39:18 +0800
-Subject: [PATCH 2/4] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-auth?=
+Subject: [PATCH 2/5] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-auth?=
  =?UTF-8?q?=20=E7=9A=84=20Session.fetch=EF=BC=88Electron=2025+=20API?=
  =?UTF-8?q?=EF=BC=89?=
 MIME-Version: 1.0
@@ -732,7 +732,7 @@ index e7597a5..8a3ece5 100644
 From df3bc5896b765bd80c5cd84246e1bd38301e85fa Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:42:46 +0800
-Subject: [PATCH 3/4] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20package.?=
+Subject: [PATCH 3/5] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20package.?=
  =?UTF-8?q?json=20JSON=20=E5=90=88=E6=B3=95=E6=80=A7=EF=BC=88=E7=A7=BB?=
  =?UTF-8?q?=E9=99=A4=E8=A1=8C=E5=86=85=E6=B3=A8=E9=87=8A=EF=BC=8C=E4=BF=9D?=
  =?UTF-8?q?=E7=95=99=E5=BF=85=E8=A6=81=E9=80=97=E5=8F=B7=EF=BC=89?=
@@ -773,7 +773,7 @@ index 016c448..2225b9c 100644
 From 0ef4922ac31047f66eead3004989618a1006c913 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:52:23 +0800
-Subject: [PATCH 4/4] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
+Subject: [PATCH 4/5] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
  =?UTF-8?q?=E6=94=BE=E8=A1=8C=20electron?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -801,6 +801,276 @@ index b9cf05a..fafefee 100644
    # Cross-platform boundary for the persistent PTY backend, including ConPTY on Windows.
    node-pty: true
    # Pulled in by @earendil-works/pi-ai (optional LLM API backend). pnpm lists
+-- 
+2.47.3
+
+
+From d49400eccc35716297d4ba8ade6ad306a3fe5ada Mon Sep 17 00:00:00 2001
+From: ImSusua <ImSusua@users.noreply.github.com>
+Date: Thu, 1 Oct 2026 20:07:02 +0800
+Subject: [PATCH 5/5] =?UTF-8?q?win81-port:=20Electron=2022=20API=20?=
+ =?UTF-8?q?=E9=80=82=E9=85=8D=EF=BC=8834=20=E4=B8=AA=20TS=20=E9=94=99?=
+ =?UTF-8?q?=E8=AF=AF=E6=B8=85=E9=9B=B6=EF=BC=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- platform-view: WebContentsView -> BrowserView（add/removeBrowserView、
+  零尺寸挂载模拟 setVisible、webContents.close 降级为 GC+3s 兜底）
+- main: protocol.handle -> registerStreamProtocol（undici Response 桥接 Node 流，
+  uploadData 转标准 Request body）；console-message 位置参数签名；移除 codeCache 特权
+- keyboard: focusedFrame(28+) -> mainFrame 兜底；did-start-navigation 位置参数
+- browser-guests: will-frame-navigate(30+) -> will-navigate
+- preload-app: webUtils(29+) -> File.path 遗留属性
+---
+ apps/desktop/src/browser-guests.ts |  5 ++--
+ apps/desktop/src/keyboard.ts       |  9 +++---
+ apps/desktop/src/main.ts           | 45 ++++++++++++++++++++++++++----
+ apps/desktop/src/platform-view.ts  | 23 ++++++++-------
+ apps/desktop/src/preload-app.ts    |  5 ++--
+ 5 files changed, 64 insertions(+), 23 deletions(-)
+
+diff --git a/apps/desktop/src/browser-guests.ts b/apps/desktop/src/browser-guests.ts
+index c3f0b10..6f7bcfe 100644
+--- a/apps/desktop/src/browser-guests.ts
++++ b/apps/desktop/src/browser-guests.ts
+@@ -117,8 +117,9 @@ export class DesktopBrowserGuests {
+         }
+         return { action: 'deny' }
+       })
+-      guest.on('will-frame-navigate', (event) => {
+-        if (event.isMainFrame && !this.allowedNavigation(event.url)) event.preventDefault()
++      // [win81-port] will-frame-navigate 为 Electron 30+ API；22 退化为 will-navigate（仅主框架）。
++      guest.on('will-navigate', (event, url) => {
++        if (!this.allowedNavigation(url)) event.preventDefault()
+       })
+       guest.on('will-redirect', (event, url, _inPlace, mainFrame) => {
+         if (mainFrame && !this.allowedNavigation(url)) event.preventDefault()
+diff --git a/apps/desktop/src/keyboard.ts b/apps/desktop/src/keyboard.ts
+index d41f6b4..c768faf 100644
+--- a/apps/desktop/src/keyboard.ts
++++ b/apps/desktop/src/keyboard.ts
+@@ -104,7 +104,7 @@ export function installDesktopShortcuts(
+     let deadKey = false
+     const held = new Set<string>()
+     const consumed = new Map<string, 'press' | 'repeat'>()
+-    let inputFrame: typeof contents.focusedFrame = null
++    let inputFrame: Electron.WebFrameMain | null = null
+     let inputRevision: ShortcutRevision | undefined
+     let overlayRevision = overlayInput(window).revision
+     const resetInput = (): void => {
+@@ -122,8 +122,9 @@ export function installDesktopShortcuts(
+       definitions = []; keys.clear(); recording = false
+       persistence.setDefinitions(null)
+     }
+-    const navigation = (event: Electron.Event<Electron.WebContentsDidStartNavigationEventParams>): void => {
+-      if (event.isMainFrame && !event.isSameDocument) clear()
++    // [win81-port] did-start-navigation 在 22 为位置参数（25+ 才有事件参数对象）。
++    const navigation = (_event: Electron.Event, _url: string, _isInPlace: boolean, isMainFrame: boolean, isSameDocument: boolean): void => {
++      if (isMainFrame && !isSameDocument) clear()
+     }
+     const beforeInput = (event: Electron.Event, input: Input): void => {
+       const overlay = overlayInput(window)
+@@ -149,7 +150,7 @@ export function installDesktopShortcuts(
+       const menuMatch = closeBinding !== null && closeBinding.secondCode === undefined && modifiers.join('+') === closeBinding.modifiers.join('+')
+         && input.key.toUpperCase() === (closeBinding.code.startsWith('Key') ? closeBinding.code.slice(3) : input.code === closeBinding.code ? input.key.toUpperCase() : '')
+       contents.setIgnoreMenuShortcuts(recording || match || menuMatch)
+-      const frame = contents.focusedFrame
++      const frame = contents.mainFrame // [win81-port] 22 无 focusedFrame，主框架兜底
+       const composing = input.isComposing || input.key === 'Dead' || deadKey || input.modifiers.includes('altgr')
+       if (input.type === 'keyDown') deadKey = input.key === 'Dead'
+       if (recording || composing || frame === null) { held.clear(); consumed.clear(); return }
+diff --git a/apps/desktop/src/main.ts b/apps/desktop/src/main.ts
+index 3c3381d..1fdbc19 100644
+--- a/apps/desktop/src/main.ts
++++ b/apps/desktop/src/main.ts
+@@ -3,6 +3,7 @@ import { WINDOWS_TITLEBAR_HEIGHT } from './windows-layout.ts'
+ /** Electron shell: desktop project ownership, custom protocol, windows, and lifecycle. */
+ 
+ import { readFile, writeFile } from 'node:fs/promises'
++import { Readable } from 'node:stream'
+ import { join } from 'node:path'
+ import { fileURLToPath } from 'node:url'
+ import {
+@@ -137,7 +138,6 @@ protocol.registerSchemesAsPrivileged([{
+     supportFetchAPI: true,
+     corsEnabled: true,
+     stream: true,
+-    codeCache: true,
+   },
+ }])
+ 
+@@ -659,7 +659,9 @@ async function main(): Promise<void> {
+     window.once('closed', () => { resolve() })
+   })
+ 
+-  protocol.handle(SCHEME, (request) => {
++  // [win81-port] protocol.handle 为 Electron 25+ API；22 上用 registerStreamProtocol：
++  // 原生请求（uploadData）转标准 Request，undici Response 主体桥接为 Node 流。
++  const serveSchemeRequest = async (request: Request): Promise<Response> => {
+     const url = new URL(request.url)
+     // Shell-owned documents live in the application bundle and never pass through the Host.
+     if (url.hostname === 'shell') return serveWebDocument(request, join(app.getAppPath(), 'renderer'))
+@@ -674,6 +676,38 @@ async function main(): Promise<void> {
+       return forwardWebRequest(request, hostUrl, hostCookie)
+     }
+     return Promise.resolve(new Response(null, { status: 404 }))
++  }
++  protocol.registerStreamProtocol(SCHEME, (request, callback) => {
++    void (async (): Promise<void> => {
++      try {
++        const upload = request.uploadData === undefined || request.uploadData.length === 0 ? undefined
++          : Buffer.concat(request.uploadData.map(part => part.bytes ?? Buffer.from(part.file ?? '', 'utf8')))
++        const standard = new Request(request.url, {
++          method: request.method,
++          headers: request.headers,
++          body: request.method === 'GET' || request.method === 'HEAD' ? undefined : upload,
++        })
++        const response = await serveSchemeRequest(standard)
++        const headers: Record<string, string> = {}
++        response.headers.forEach((value, name) => { headers[name] = value })
++        if (response.body === null) {
++          callback({ statusCode: response.status, headers })
++          return
++        }
++        const reader = response.body.getReader()
++        const stream = new Readable({
++          read() {
++            reader.read().then(({ done, value }) => {
++              if (done) { this.push(null); return }
++              this.push(Buffer.from(value))
++            }).catch((error) => { this.destroy(error as Error) })
++          },
++        })
++        callback({ statusCode: response.status, headers, data: stream })
++      } catch {
++        callback({ statusCode: 500 })
++      }
++    })()
+   })
+ 
+   installDesktopDirectoryPicker(() => mainWindow)
+@@ -1090,9 +1124,10 @@ async function main(): Promise<void> {
+       window.on('show', () => { sessionEnding = false })
+     }
+     window.on('closed', () => { if (mainWindow === window) mainWindow = undefined })
+-    window.webContents.on('console-message', (details) => {
+-      if (details.level !== 'error') return
+-      rendererConsole.push(`${details.sourceId}:${String(details.lineNumber)} ${details.message}`)
++    window.webContents.on('console-message', (_event, level, message, lineNumber, sourceId) => {
++      // [win81-port] Electron 22 为位置参数签名（25+ 才有 details 对象）。
++      if (level !== 'error') return
++      rendererConsole.push(`${sourceId}:${String(lineNumber)} ${message}`)
+     })
+     window.webContents.on('did-fail-load', (_event, code, description, url, isMainFrame) => {
+       if (isMainFrame && code !== -3 && !quitting && !window.isDestroyed()) {
+diff --git a/apps/desktop/src/platform-view.ts b/apps/desktop/src/platform-view.ts
+index ce759c6..6779c31 100644
+--- a/apps/desktop/src/platform-view.ts
++++ b/apps/desktop/src/platform-view.ts
+@@ -1,7 +1,7 @@
+ /** Isolated Platform documents owned by the desktop account lifetime. */
+ import type { EventEmitter } from 'node:events'
+ import { createHash, randomUUID } from 'node:crypto'
+-import { WebContentsView, session, shell, type Session, type View, type WebFrameMain } from 'electron'
++import { BrowserView, session, shell, type Session, type WebFrameMain } from 'electron'
+ import { mergePlatformCookies, platformClientHeaders, type PlatformSession } from '@deepseek-ai/dsh-deepseek-account'
+ import { desktopClientMetadata } from './client-metadata.ts'
+ 
+@@ -31,7 +31,8 @@ export function platformBounds(value: unknown): PlatformBounds {
+ 
+ type PlatformOwner = Pick<EventEmitter, 'on' | 'removeListener'> & {
+   webContents: Pick<EventEmitter, 'on' | 'removeListener'>
+-  contentView: Pick<View, 'addChildView' | 'removeChildView'>
++  addBrowserView(view: BrowserView): void
++  removeBrowserView(view: BrowserView): void
+   isDestroyed(): boolean
+ }
+ 
+@@ -40,7 +41,8 @@ type PlatformSender = { sender: object; senderFrame: Pick<WebFrameMain, 'url'> |
+ /** Native view and its credential snapshot are discarded together. */
+ export class DesktopPlatformView {
+   private account: PlatformSession | null = null
+-  private view: WebContentsView | undefined
++  private view: BrowserView | undefined
++  private lastBounds: PlatformBounds | undefined
+   private owner: PlatformOwner | undefined
+   private releaseOwner: (() => void) | undefined
+   private generation = 0
+@@ -135,7 +137,7 @@ export class DesktopPlatformView {
+       }
+       callback({ requestHeaders: headers })
+     })
+-    const view = new WebContentsView({ webPreferences: {
++    const view = new BrowserView({ webPreferences: {
+       session: browserSession, preload: this.preload, sandbox: true, contextIsolation: true,
+       additionalArguments: [`--dsh-platform-origin=${account.origin}`],
+       nodeIntegration: false, webSecurity: true,
+@@ -162,8 +164,8 @@ export class DesktopPlatformView {
+     view.webContents.on('will-attach-webview', (event) => { event.preventDefault() })
+     view.webContents.on('preload-error', () => { if (this.view === view) this.close() })
+     view.webContents.on('render-process-gone', () => { if (this.view === view) this.close() })
+-    view.setVisible(false)
+-    owner.contentView.addChildView(view)
++    view.setBounds({ x: 0, y: 0, width: 0, height: 0 }) // [win81-port] 22 无 setVisible；先以零尺寸挂载
++    owner.addBrowserView(view)
+     view.setBounds(bounds)
+     try {
+       const url = new URL(page === 'usage' ? '/usage' : '/top_up', account.origin)
+@@ -179,11 +181,11 @@ export class DesktopPlatformView {
+         throw error
+       }
+     }
+-    if (generation === this.generation && this.view === view) view.setVisible(true)
++    if (generation === this.generation && this.view === view && this.lastBounds !== undefined) view.setBounds(this.lastBounds)
+   }
+ 
+   /** @param bounds - current application viewport rectangle. */
+-  setBounds(bounds: PlatformBounds): void { this.view?.setBounds(bounds) }
++  setBounds(bounds: PlatformBounds): void { this.lastBounds = bounds; this.view?.setBounds(bounds) }
+ 
+   /**
+    * Return prepared credentials and resolved language only to the current Platform main frame.
+@@ -218,13 +220,14 @@ export class DesktopPlatformView {
+     const owner = this.owner
+     this.owner = undefined
+     if (view === undefined) return
+-    if (owner !== undefined && !owner.isDestroyed()) owner.contentView.removeChildView(view)
++    if (owner !== undefined && !owner.isDestroyed()) owner.removeBrowserView(view)
+     const browserSession = view.webContents.session
+     const destroyed = new Promise<void>((resolve) => {
++      // [win81-port] Electron 22 的 webContents 无 close()；移除视图后等 GC 回收，3s 兜底。
+       if (view.webContents.isDestroyed()) resolve()
+       else {
+         view.webContents.once('destroyed', resolve)
+-        view.webContents.close({ waitForBeforeUnload: false })
++        setTimeout(resolve, 3000).unref?.()
+       }
+     })
+     browserSession.webRequest.onBeforeSendHeaders(null)
+diff --git a/apps/desktop/src/preload-app.ts b/apps/desktop/src/preload-app.ts
+index f590b8b..4cbafc0 100644
+--- a/apps/desktop/src/preload-app.ts
++++ b/apps/desktop/src/preload-app.ts
+@@ -1,7 +1,7 @@
+ /** Origin-scoped boot, native directory selection, host paths of picked files, and update presentation with native confirmation actions. */
+ 
+ import type { DesktopShortcutInput, ShortcutConfigSnapshot, ShortcutSaveResult } from '@deepseek-ai/dsh-client-shortcuts/protocol'
+-import { contextBridge, ipcRenderer, webUtils } from 'electron'
++import { contextBridge, ipcRenderer } from 'electron'
+ import { DESKTOP_IPC, SCHEME, type DshDesktopProductApi, type DesktopUpdatePresentation } from './ipc.ts'
+ import { PLATFORM_IPC } from './platform-ipc.ts'
+ import { markDocumentPlatform, syncWindowFullscreen } from './preload-platform.ts'
+@@ -80,7 +80,8 @@ if (location.protocol === `${SCHEME}:` && location.hostname === 'app') {
+   // have a real path as `@path` references instead of uploading them; a
+   // File without one (pasted bytes) answers '' and uploads as before.
+   contextBridge.exposeInMainWorld('__DSH_HOST_PATHS__', {
+-    pathFor: (file: File) => webUtils.getPathForFile(file),
++    // [win81-port] webUtils 为 Electron 29+；22 的渲染进程 File 仍暴露 .path。
++    pathFor: (file: File) => (file as File & { path?: string }).path ?? '',
+   })
+   contextBridge.exposeInMainWorld('dshDesktopBoot', {
+     ready: () => ipcRenderer.invoke(DESKTOP_IPC.boot) as Promise<unknown>,
 -- 
 2.47.3
 

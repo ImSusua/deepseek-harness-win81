@@ -62,7 +62,7 @@ jobs:
           ENVEOF
 
       - name: Package desktop (win x64 dir, unsigned, Electron 22)
-        run: pnpm --filter @deepseek-ai/dsh-desktop exec tsx scripts/package-target.ts win-x64 --unsigned --dir
+        run: pnpm --filter @deepseek-ai/dsh-desktop run package:win:x64:unsigned -- --dir
         working-directory: dsh
 
       - name: Patch bundled ripgrep for Windows 8.1

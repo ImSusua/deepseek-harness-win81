@@ -1,7 +1,7 @@
 From b61da2ce871864a83b306ab9a7c495c762735e8d Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:24:37 +0800
-Subject: [PATCH 01/12] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82?=
+Subject: [PATCH 01/13] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82?=
  =?UTF-8?q?=E9=85=8D=20Windows=208.1=EF=BC=88Electron=2022=20/=20Node=2022?=
  =?UTF-8?q?.19=20/=20rg=20=E5=9E=AB=E7=89=87=EF=BC=89?=
 MIME-Version: 1.0
@@ -692,7 +692,7 @@ index f5b0ada..bf041a7 100644
 From f6766a1fb200cb79fe51f17c3ba8b9c708cca701 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:39:18 +0800
-Subject: [PATCH 02/12] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-aut?=
+Subject: [PATCH 02/13] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-aut?=
  =?UTF-8?q?h=20=E7=9A=84=20Session.fetch=EF=BC=88Electron=2025+=20API?=
  =?UTF-8?q?=EF=BC=89?=
 MIME-Version: 1.0
@@ -732,7 +732,7 @@ index e7597a5..8a3ece5 100644
 From df3bc5896b765bd80c5cd84246e1bd38301e85fa Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:42:46 +0800
-Subject: [PATCH 03/12] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20packag?=
+Subject: [PATCH 03/13] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20packag?=
  =?UTF-8?q?e.json=20JSON=20=E5=90=88=E6=B3=95=E6=80=A7=EF=BC=88=E7=A7=BB?=
  =?UTF-8?q?=E9=99=A4=E8=A1=8C=E5=86=85=E6=B3=A8=E9=87=8A=EF=BC=8C=E4=BF=9D?=
  =?UTF-8?q?=E7=95=99=E5=BF=85=E8=A6=81=E9=80=97=E5=8F=B7=EF=BC=89?=
@@ -773,7 +773,7 @@ index 016c448..2225b9c 100644
 From 0ef4922ac31047f66eead3004989618a1006c913 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:52:23 +0800
-Subject: [PATCH 04/12] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
+Subject: [PATCH 04/13] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
  =?UTF-8?q?=E6=94=BE=E8=A1=8C=20electron?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -808,7 +808,7 @@ index b9cf05a..fafefee 100644
 From d49400eccc35716297d4ba8ade6ad306a3fe5ada Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:07:02 +0800
-Subject: [PATCH 05/12] =?UTF-8?q?win81-port:=20Electron=2022=20API=20?=
+Subject: [PATCH 05/13] =?UTF-8?q?win81-port:=20Electron=2022=20API=20?=
  =?UTF-8?q?=E9=80=82=E9=85=8D=EF=BC=8834=20=E4=B8=AA=20TS=20=E9=94=99?=
  =?UTF-8?q?=E8=AF=AF=E6=B8=85=E9=9B=B6=EF=BC=89?=
 MIME-Version: 1.0
@@ -1078,7 +1078,7 @@ index f590b8b..4cbafc0 100644
 From ff739e07d468fc00baedb98a17e06b1d63f291f3 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:39:11 +0800
-Subject: [PATCH 06/12] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
+Subject: [PATCH 06/13] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
  =?UTF-8?q?=E4=BD=99=2058=20=E4=B8=AA=E7=B1=BB=E5=9E=8B=E9=94=99=E8=AF=AF?=
  =?UTF-8?q?=EF=BC=88=E6=B5=8B=E8=AF=95=E6=A1=A9=E9=80=82=E9=85=8D=20+=20Pr?=
  =?UTF-8?q?ocess.once=20=E7=B1=BB=E5=9E=8B=E5=A2=9E=E5=BC=BA=EF=BC=89?=
@@ -1363,7 +1363,7 @@ index 6d2807c..f80adf2 100644
 From ce0fa58068fc580f3ad95beeeb0fbefaf1716773 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:50:40 +0800
-Subject: [PATCH 07/12] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
+Subject: [PATCH 07/13] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
  =?UTF-8?q?=E4=BD=99=209=20=E4=B8=AA=E7=B1=BB=E5=9E=8B=E9=94=99=E8=AF=AF?=
  =?UTF-8?q?=EF=BC=88helper=20=E5=8F=82=E6=95=B0=E6=94=BE=E5=AE=BD=20/=20?=
  =?UTF-8?q?=E8=BF=AD=E4=BB=A3=E7=B1=BB=E5=9E=8B=E4=BF=AE=E6=AD=A3=20/=20mo?=
@@ -1450,7 +1450,7 @@ index 76badaa..00b8fc6 100644
 From 5238c15c1dceee77819c56c3f3a0c16d5ad1471f Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 21:13:45 +0800
-Subject: [PATCH 08/12] =?UTF-8?q?win81-port:=20keyboard.spec=20=E5=BC=BA?=
+Subject: [PATCH 08/13] =?UTF-8?q?win81-port:=20keyboard.spec=20=E5=BC=BA?=
  =?UTF-8?q?=E8=BD=AC=E5=8A=A0=20unknown=20=E4=B8=AD=E8=BD=AC=EF=BC=88Elect?=
  =?UTF-8?q?ron=2022=20BrowserWindow=20=E7=B1=BB=E5=9E=8B=E9=87=8D=E5=8F=A0?=
  =?UTF-8?q?=E4=B8=8D=E8=B6=B3=EF=BC=89?=
@@ -1509,7 +1509,7 @@ index 3d435e5..baf7c85 100644
 From e615404feb45b50fdc867aabd4009ea989fd5e11 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 21:27:16 +0800
-Subject: [PATCH 09/12] =?UTF-8?q?win81-port:=20installFixture=20=E5=BC=BA?=
+Subject: [PATCH 09/13] =?UTF-8?q?win81-port:=20installFixture=20=E5=BC=BA?=
  =?UTF-8?q?=E8=BD=AC=E8=A1=A5=20unknown=20=E4=B8=AD=E8=BD=AC=EF=BC=88?=
  =?UTF-8?q?=E6=9C=80=E5=90=8E=E4=B8=80=E4=B8=AA=E7=B1=BB=E5=9E=8B=E9=94=99?=
  =?UTF-8?q?=E8=AF=AF=EF=BC=89?=
@@ -1541,7 +1541,7 @@ index baf7c85..d85b8a1 100644
 From 53a5e690a47a2fc61fe5acbca64a22cae5f7d451 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 22:22:07 +0800
-Subject: [PATCH 10/12] =?UTF-8?q?win81-port:=20=E8=A1=A5=E5=BB=BA=20electr?=
+Subject: [PATCH 10/13] =?UTF-8?q?win81-port:=20=E8=A1=A5=E5=BB=BA=20electr?=
  =?UTF-8?q?on-builder.config.win81.mjs=20=E5=85=A5=E5=8F=A3?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -1573,7 +1573,7 @@ index 0000000..c313407
 From 57b3762b1fe0bba3f353e4dca29718719e78c787 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Fri, 2 Oct 2026 10:08:59 +0800
-Subject: [PATCH 11/12] =?UTF-8?q?win81-port:=20prepare-dsh=20=E6=94=B9?=
+Subject: [PATCH 11/13] =?UTF-8?q?win81-port:=20prepare-dsh=20=E6=94=B9?=
  =?UTF-8?q?=E7=94=A8=20primary-runtime=20Node=20=E8=B7=91=20pnpm?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -1612,7 +1612,7 @@ index 442e017..c39d3e5 100644
 From c635960cb511ea61a91d60a462dc4790383cd6c1 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Fri, 2 Oct 2026 11:37:58 +0800
-Subject: [PATCH 12/12] =?UTF-8?q?win81-port:=20payload=20Node=20=E7=BB=9F?=
+Subject: [PATCH 12/13] =?UTF-8?q?win81-port:=20payload=20Node=20=E7=BB=9F?=
  =?UTF-8?q?=E4=B8=80=E4=B8=BA=20primary-runtime=20Node=2022.19=EF=BC=88smo?=
  =?UTF-8?q?ke=20=E6=96=AD=E8=A8=80=E5=AF=B9=E9=BD=90=20+=20=E8=BF=90?=
  =?UTF-8?q?=E8=A1=8C=E6=97=B6=E6=8E=A5=E7=BA=BF=EF=BC=89?=
@@ -1731,6 +1731,37 @@ index d0d7bb9..61a141e 100644
  assert.ok(process.execArgv.includes('--expose-internals'))
  assert.equal(typeof require('internal/modules/esm/loader').getOrInitializeCascadedLoader, 'function')
  console.log('desktop-node-script-ok')
+-- 
+2.47.3
+
+
+From 1f6aedd0971e5d39681b06e9d644e057747d9f68 Mon Sep 17 00:00:00 2001
+From: ImSusua <ImSusua@users.noreply.github.com>
+Date: Fri, 2 Oct 2026 12:12:15 +0800
+Subject: [PATCH 13/13] =?UTF-8?q?win81-port:=20prepare-runtime=20=E7=94=A8?=
+ =?UTF-8?q?=E5=B7=B2=E5=AF=BC=E5=85=A5=E7=9A=84=20join=20=E6=8B=BC=20lock.?=
+ =?UTF-8?q?json=20=E8=B7=AF=E5=BE=84=EF=BC=88=E4=BF=AE=20TS2304=EF=BC=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ apps/desktop/scripts/prepare-runtime.ts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/apps/desktop/scripts/prepare-runtime.ts b/apps/desktop/scripts/prepare-runtime.ts
+index 3cd14c9..0363958 100644
+--- a/apps/desktop/scripts/prepare-runtime.ts
++++ b/apps/desktop/scripts/prepare-runtime.ts
+@@ -44,7 +44,7 @@ async function main(): Promise<void> {
+   // primary-runtime Node 22.19（见 prepare-dsh 与 lock.json）；versions.json 必须
+   // 记录实际运行的 Node 版本，否则 runtime-payload-smoke 的版本断言失败。
+   const nodeVersion = process.env.DSH_WIN81 === '1'
+-    ? (JSON.parse(readFileSync(resolve(import.meta.dirname, '../../../scripts/primary-runtime/lock.json'), 'utf8')) as { nodeVersion: string }).nodeVersion
++    ? (JSON.parse(readFileSync(join(import.meta.dirname, '../../..', 'scripts', 'primary-runtime', 'lock.json'), 'utf8')) as { nodeVersion: string }).nodeVersion
+     : execFileSync(executable, ['-p', 'process.versions.node'], {
+       encoding: 'utf8', env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
+     }).trim()
 -- 
 2.47.3
 

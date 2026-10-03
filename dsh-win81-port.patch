@@ -1656,7 +1656,7 @@ index 4a47a92..86bb050 100644
 --- a/apps/desktop-host/src/index.ts
 +++ b/apps/desktop-host/src/index.ts
 @@ -30,11 +30,12 @@ async function main(): Promise<void> {
-     args: ['--no-open', '--port', '19387'],
+     args: ['--no-open', '--port', '0'],
      ...(process.argv[5] === undefined ? {} : {
        packageManager: {
 -        command: process.execPath,

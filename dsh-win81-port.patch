@@ -1,7 +1,7 @@
-From b61da2ce871864a83b306ab9a7c495c762735e8d Mon Sep 17 00:00:00 2001
+From c150aaa0ec5a1671e433ef44c0ea0238ea0b58a4 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:24:37 +0800
-Subject: [PATCH 01/14] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82?=
+Subject: [PATCH 01/12] =?UTF-8?q?win81-port:=20Desktop=20=E9=80=82?=
  =?UTF-8?q?=E9=85=8D=20Windows=208.1=EF=BC=88Electron=2022=20/=20Node=2022?=
  =?UTF-8?q?.19=20/=20rg=20=E5=9E=AB=E7=89=87=EF=BC=89?=
 MIME-Version: 1.0
@@ -35,7 +35,7 @@ Content-Transfer-Encoding: 8bit
 
 diff --git a/.github/workflows/build-win81.yml b/.github/workflows/build-win81.yml
 new file mode 100644
-index 0000000..225beb6
+index 000000000..225beb6fe
 --- /dev/null
 +++ b/.github/workflows/build-win81.yml
 @@ -0,0 +1,48 @@
@@ -88,7 +88,7 @@ index 0000000..225beb6
 +          name: dsh-win81-portable
 +          path: deepseek-harness-win81-x64-portable.zip
 diff --git a/apps/desktop/package.json b/apps/desktop/package.json
-index 3eaf57f..016c448 100644
+index cd0def794..f4e668d65 100644
 --- a/apps/desktop/package.json
 +++ b/apps/desktop/package.json
 @@ -42,6 +42,7 @@
@@ -452,7 +452,7 @@ HcmV?d00001
 
 diff --git a/apps/desktop/scripts/electron-builder-config.win81.mjs b/apps/desktop/scripts/electron-builder-config.win81.mjs
 new file mode 100644
-index 0000000..7e8de92
+index 000000000..7e8de9294
 --- /dev/null
 +++ b/apps/desktop/scripts/electron-builder-config.win81.mjs
 @@ -0,0 +1,19 @@
@@ -476,7 +476,7 @@ index 0000000..7e8de92
 +  return config
 +}
 diff --git a/apps/desktop/scripts/package-target.ts b/apps/desktop/scripts/package-target.ts
-index 62f4fcb..6f81475 100644
+index 62f4fcbbb..6f814757d 100644
 --- a/apps/desktop/scripts/package-target.ts
 +++ b/apps/desktop/scripts/package-target.ts
 @@ -266,7 +266,8 @@ export function desktopElectronBuilderArguments(
@@ -491,7 +491,7 @@ index 62f4fcb..6f81475 100644
      target.builderArch,
 diff --git a/apps/desktop/scripts/win81-patch-rg.mjs b/apps/desktop/scripts/win81-patch-rg.mjs
 new file mode 100644
-index 0000000..13ad8ba
+index 000000000..13ad8bae3
 --- /dev/null
 +++ b/apps/desktop/scripts/win81-patch-rg.mjs
 @@ -0,0 +1,40 @@
@@ -536,7 +536,7 @@ index 0000000..13ad8ba
 +}
 +console.log(`[win81-port] rg.exe 补丁完成: ${patched}/${targets.length}`)
 diff --git a/apps/desktop/src/main.ts b/apps/desktop/src/main.ts
-index b4b8153..3c3381d 100644
+index b4b8153b7..3c3381d1b 100644
 --- a/apps/desktop/src/main.ts
 +++ b/apps/desktop/src/main.ts
 @@ -15,13 +15,13 @@ import {
@@ -565,7 +565,7 @@ index b4b8153..3c3381d 100644
          stopAccount?.()
 diff --git a/apps/desktop/src/win81-compat.ts b/apps/desktop/src/win81-compat.ts
 new file mode 100644
-index 0000000..91b6d4f
+index 000000000..91b6d4fc0
 --- /dev/null
 +++ b/apps/desktop/src/win81-compat.ts
 @@ -0,0 +1,17 @@
@@ -587,7 +587,7 @@ index 0000000..91b6d4f
 +  g.FormData = FormData
 +}
 diff --git a/packages/subprocess/subprocess-local/src/index.ts b/packages/subprocess/subprocess-local/src/index.ts
-index 7b11f4f..3f743bb 100644
+index 7b11f4f8d..3f743bb5c 100644
 --- a/packages/subprocess/subprocess-local/src/index.ts
 +++ b/packages/subprocess/subprocess-local/src/index.ts
 @@ -10,7 +10,7 @@
@@ -625,7 +625,7 @@ index 7b11f4f..3f743bb 100644
 +  return Number.isFinite(build) && build >= 16299
 +}
 diff --git a/scripts/primary-runtime/lock.json b/scripts/primary-runtime/lock.json
-index f5b0ada..bf041a7 100644
+index f5b0ada48..bf041a77b 100644
 --- a/scripts/primary-runtime/lock.json
 +++ b/scripts/primary-runtime/lock.json
 @@ -1,11 +1,11 @@
@@ -689,10 +689,10 @@ index f5b0ada..bf041a7 100644
 2.47.3
 
 
-From f6766a1fb200cb79fe51f17c3ba8b9c708cca701 Mon Sep 17 00:00:00 2001
+From 43f5a80c152cba2f14898880d5f65cb8ee72c4d9 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:39:18 +0800
-Subject: [PATCH 02/14] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-aut?=
+Subject: [PATCH 02/12] =?UTF-8?q?win81-port:=20=E5=9E=AB=20policy-test-aut?=
  =?UTF-8?q?h=20=E7=9A=84=20Session.fetch=EF=BC=88Electron=2025+=20API?=
  =?UTF-8?q?=EF=BC=89?=
 MIME-Version: 1.0
@@ -706,7 +706,7 @@ Electron 22 无 Session.fetch；改用 undici 全局 fetch + 从登录 Session
  1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/apps/desktop/src/policy-test-auth.ts b/apps/desktop/src/policy-test-auth.ts
-index e7597a5..8a3ece5 100644
+index e7597a5e5..8a3ece5d1 100644
 --- a/apps/desktop/src/policy-test-auth.ts
 +++ b/apps/desktop/src/policy-test-auth.ts
 @@ -58,7 +58,14 @@ export class DesktopPolicyTestAuth {
@@ -729,10 +729,10 @@ index e7597a5..8a3ece5 100644
 2.47.3
 
 
-From df3bc5896b765bd80c5cd84246e1bd38301e85fa Mon Sep 17 00:00:00 2001
+From 472ebe101e32f1ec013c442d2a24e0dbcb492942 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:42:46 +0800
-Subject: [PATCH 03/14] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20packag?=
+Subject: [PATCH 03/12] =?UTF-8?q?win81-port:=20=E4=BF=AE=E5=A4=8D=20packag?=
  =?UTF-8?q?e.json=20JSON=20=E5=90=88=E6=B3=95=E6=80=A7=EF=BC=88=E7=A7=BB?=
  =?UTF-8?q?=E9=99=A4=E8=A1=8C=E5=86=85=E6=B3=A8=E9=87=8A=EF=BC=8C=E4=BF=9D?=
  =?UTF-8?q?=E7=95=99=E5=BF=85=E8=A6=81=E9=80=97=E5=8F=B7=EF=BC=89?=
@@ -745,7 +745,7 @@ Content-Transfer-Encoding: 8bit
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/apps/desktop/package.json b/apps/desktop/package.json
-index 016c448..2225b9c 100644
+index f4e668d65..db7066d50 100644
 --- a/apps/desktop/package.json
 +++ b/apps/desktop/package.json
 @@ -42,7 +42,7 @@
@@ -770,10 +770,10 @@ index 016c448..2225b9c 100644
 2.47.3
 
 
-From 0ef4922ac31047f66eead3004989618a1006c913 Mon Sep 17 00:00:00 2001
+From c1eb3d83a4eecac7a8a912a36747ab47547299ae Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 19:52:23 +0800
-Subject: [PATCH 04/14] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
+Subject: [PATCH 04/12] =?UTF-8?q?win81-port:=20pnpm=20allowBuilds=20?=
  =?UTF-8?q?=E6=94=BE=E8=A1=8C=20electron?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -787,7 +787,7 @@ Content-Transfer-Encoding: 8bit
  1 file changed, 4 insertions(+)
 
 diff --git a/pnpm-workspace.yaml b/pnpm-workspace.yaml
-index b9cf05a..fafefee 100644
+index a3b8cd6df..86e5fe649 100644
 --- a/pnpm-workspace.yaml
 +++ b/pnpm-workspace.yaml
 @@ -31,6 +31,10 @@ peerDependencyRules:
@@ -805,10 +805,10 @@ index b9cf05a..fafefee 100644
 2.47.3
 
 
-From d49400eccc35716297d4ba8ade6ad306a3fe5ada Mon Sep 17 00:00:00 2001
+From ebf27dee85cb51abff0f324f665ff5987cc81609 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:07:02 +0800
-Subject: [PATCH 05/14] =?UTF-8?q?win81-port:=20Electron=2022=20API=20?=
+Subject: [PATCH 05/12] =?UTF-8?q?win81-port:=20Electron=2022=20API=20?=
  =?UTF-8?q?=E9=80=82=E9=85=8D=EF=BC=8834=20=E4=B8=AA=20TS=20=E9=94=99?=
  =?UTF-8?q?=E8=AF=AF=E6=B8=85=E9=9B=B6=EF=BC=89?=
 MIME-Version: 1.0
@@ -831,7 +831,7 @@ Content-Transfer-Encoding: 8bit
  5 files changed, 64 insertions(+), 23 deletions(-)
 
 diff --git a/apps/desktop/src/browser-guests.ts b/apps/desktop/src/browser-guests.ts
-index c3f0b10..6f7bcfe 100644
+index c3f0b10ee..6f7bcfea9 100644
 --- a/apps/desktop/src/browser-guests.ts
 +++ b/apps/desktop/src/browser-guests.ts
 @@ -117,8 +117,9 @@ export class DesktopBrowserGuests {
@@ -847,7 +847,7 @@ index c3f0b10..6f7bcfe 100644
        guest.on('will-redirect', (event, url, _inPlace, mainFrame) => {
          if (mainFrame && !this.allowedNavigation(url)) event.preventDefault()
 diff --git a/apps/desktop/src/keyboard.ts b/apps/desktop/src/keyboard.ts
-index d41f6b4..c768faf 100644
+index d41f6b47c..c768fafc4 100644
 --- a/apps/desktop/src/keyboard.ts
 +++ b/apps/desktop/src/keyboard.ts
 @@ -104,7 +104,7 @@ export function installDesktopShortcuts(
@@ -881,7 +881,7 @@ index d41f6b4..c768faf 100644
        if (input.type === 'keyDown') deadKey = input.key === 'Dead'
        if (recording || composing || frame === null) { held.clear(); consumed.clear(); return }
 diff --git a/apps/desktop/src/main.ts b/apps/desktop/src/main.ts
-index 3c3381d..1fdbc19 100644
+index 3c3381d1b..1fdbc191a 100644
 --- a/apps/desktop/src/main.ts
 +++ b/apps/desktop/src/main.ts
 @@ -3,6 +3,7 @@ import { WINDOWS_TITLEBAR_HEIGHT } from './windows-layout.ts'
@@ -965,7 +965,7 @@ index 3c3381d..1fdbc19 100644
      window.webContents.on('did-fail-load', (_event, code, description, url, isMainFrame) => {
        if (isMainFrame && code !== -3 && !quitting && !window.isDestroyed()) {
 diff --git a/apps/desktop/src/platform-view.ts b/apps/desktop/src/platform-view.ts
-index ce759c6..6779c31 100644
+index ce759c61b..6779c3115 100644
 --- a/apps/desktop/src/platform-view.ts
 +++ b/apps/desktop/src/platform-view.ts
 @@ -1,7 +1,7 @@
@@ -1049,7 +1049,7 @@ index ce759c6..6779c31 100644
      })
      browserSession.webRequest.onBeforeSendHeaders(null)
 diff --git a/apps/desktop/src/preload-app.ts b/apps/desktop/src/preload-app.ts
-index f590b8b..4cbafc0 100644
+index f590b8bc8..4cbafc03f 100644
 --- a/apps/desktop/src/preload-app.ts
 +++ b/apps/desktop/src/preload-app.ts
 @@ -1,7 +1,7 @@
@@ -1075,10 +1075,10 @@ index f590b8b..4cbafc0 100644
 2.47.3
 
 
-From ff739e07d468fc00baedb98a17e06b1d63f291f3 Mon Sep 17 00:00:00 2001
+From 32e4bbbe6d5d6ca7f83fb6a3be77b7eccd36ea45 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:39:11 +0800
-Subject: [PATCH 06/14] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
+Subject: [PATCH 06/12] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
  =?UTF-8?q?=E4=BD=99=2058=20=E4=B8=AA=E7=B1=BB=E5=9E=8B=E9=94=99=E8=AF=AF?=
  =?UTF-8?q?=EF=BC=88=E6=B5=8B=E8=AF=95=E6=A1=A9=E9=80=82=E9=85=8D=20+=20Pr?=
  =?UTF-8?q?ocess.once=20=E7=B1=BB=E5=9E=8B=E5=A2=9E=E5=BC=BA=EF=BC=89?=
@@ -1108,7 +1108,7 @@ Content-Transfer-Encoding: 8bit
 
 diff --git a/apps/desktop/scripts/win81-electron22-types.d.ts b/apps/desktop/scripts/win81-electron22-types.d.ts
 new file mode 100644
-index 0000000..803ff0c
+index 000000000..803ff0c74
 --- /dev/null
 +++ b/apps/desktop/scripts/win81-electron22-types.d.ts
 @@ -0,0 +1,9 @@
@@ -1122,7 +1122,7 @@ index 0000000..803ff0c
 +  }
 +}
 diff --git a/apps/desktop/src/keyboard.ts b/apps/desktop/src/keyboard.ts
-index c768faf..42c79fd 100644
+index c768fafc4..42c79fd13 100644
 --- a/apps/desktop/src/keyboard.ts
 +++ b/apps/desktop/src/keyboard.ts
 @@ -122,9 +122,9 @@ export function installDesktopShortcuts(
@@ -1139,7 +1139,7 @@ index c768faf..42c79fd 100644
      const beforeInput = (event: Electron.Event, input: Input): void => {
        const overlay = overlayInput(window)
 diff --git a/apps/desktop/src/main.ts b/apps/desktop/src/main.ts
-index 1fdbc19..3dde893 100644
+index 1fdbc191a..3dde893e6 100644
 --- a/apps/desktop/src/main.ts
 +++ b/apps/desktop/src/main.ts
 @@ -682,11 +682,9 @@ async function main(): Promise<void> {
@@ -1169,7 +1169,7 @@ index 1fdbc19..3dde893 100644
      })
      window.webContents.on('did-fail-load', (_event, code, description, url, isMainFrame) => {
 diff --git a/apps/desktop/tests/main-startup.spec.ts b/apps/desktop/tests/main-startup.spec.ts
-index b6b6fd4..92dd04c 100644
+index b6b6fd476..92dd04c1e 100644
 --- a/apps/desktop/tests/main-startup.spec.ts
 +++ b/apps/desktop/tests/main-startup.spec.ts
 @@ -217,7 +217,7 @@ const harness = await vi.hoisted(async () => {
@@ -1291,7 +1291,7 @@ index b6b6fd4..92dd04c 100644
  
    it.each(['darwin', 'win32'] as const)('relays the %s fullscreen state on transitions and after each load', async (platform) => {
 diff --git a/apps/desktop/tests/microphone-permissions.spec.ts b/apps/desktop/tests/microphone-permissions.spec.ts
-index 200a980..db75db1 100644
+index 200a980f2..db75db14c 100644
 --- a/apps/desktop/tests/microphone-permissions.spec.ts
 +++ b/apps/desktop/tests/microphone-permissions.spec.ts
 @@ -46,7 +46,8 @@ it.each([true, false])('waits for the first macOS authorization decision: %s', a
@@ -1318,7 +1318,7 @@ index 200a980..db75db1 100644
  })
  it.each(['win32', 'linux'] as const)('leaves system authorization to Chromium on %s', (platform) => {
 diff --git a/apps/desktop/tests/platform-view.spec.ts b/apps/desktop/tests/platform-view.spec.ts
-index f62987d..76badaa 100644
+index f62987d0e..76badaafc 100644
 --- a/apps/desktop/tests/platform-view.spec.ts
 +++ b/apps/desktop/tests/platform-view.spec.ts
 @@ -48,7 +48,7 @@ afterEach(() => {
@@ -1340,7 +1340,7 @@ index f62987d..76badaa 100644
    const manager = new DesktopPlatformView('/bundled/preload.cjs', () => locale, 'darwin')
    manager.setSession({ origin: 'https://platform.deepseek.com', userId: null, token: 'fixture-secret' })
 diff --git a/apps/desktop/tests/welcome-window.spec.ts b/apps/desktop/tests/welcome-window.spec.ts
-index 6d2807c..f80adf2 100644
+index 6d2807c42..f80adf29a 100644
 --- a/apps/desktop/tests/welcome-window.spec.ts
 +++ b/apps/desktop/tests/welcome-window.spec.ts
 @@ -66,12 +66,10 @@ describe('desktop welcome window', () => {
@@ -1360,10 +1360,10 @@ index 6d2807c..f80adf2 100644
 2.47.3
 
 
-From ce0fa58068fc580f3ad95beeeb0fbefaf1716773 Mon Sep 17 00:00:00 2001
+From bc11435fdf258daa3c6c39852e01defaa6cb0a5a Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 20:50:40 +0800
-Subject: [PATCH 07/14] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
+Subject: [PATCH 07/12] =?UTF-8?q?win81-port:=20=E6=B8=85=E9=9B=B6=E5=89=A9?=
  =?UTF-8?q?=E4=BD=99=209=20=E4=B8=AA=E7=B1=BB=E5=9E=8B=E9=94=99=E8=AF=AF?=
  =?UTF-8?q?=EF=BC=88helper=20=E5=8F=82=E6=95=B0=E6=94=BE=E5=AE=BD=20/=20?=
  =?UTF-8?q?=E8=BF=AD=E4=BB=A3=E7=B1=BB=E5=9E=8B=E4=BF=AE=E6=AD=A3=20/=20mo?=
@@ -1379,7 +1379,7 @@ Content-Transfer-Encoding: 8bit
  3 files changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/apps/desktop/tests/main-startup.spec.ts b/apps/desktop/tests/main-startup.spec.ts
-index 92dd04c..493ec11 100644
+index 92dd04c1e..493ec113a 100644
 --- a/apps/desktop/tests/main-startup.spec.ts
 +++ b/apps/desktop/tests/main-startup.spec.ts
 @@ -438,10 +438,11 @@ afterEach(async () => {
@@ -1397,7 +1397,7 @@ index 92dd04c..493ec11 100644
        const data = captured?.data
        if (data === undefined) return ''
 diff --git a/apps/desktop/tests/microphone-permissions.spec.ts b/apps/desktop/tests/microphone-permissions.spec.ts
-index db75db1..f44a9ff 100644
+index db75db14c..f44a9ff0c 100644
 --- a/apps/desktop/tests/microphone-permissions.spec.ts
 +++ b/apps/desktop/tests/microphone-permissions.spec.ts
 @@ -55,7 +55,7 @@ it('requests macOS microphone access and reports operating-system rejection', as
@@ -1410,7 +1410,7 @@ index db75db1..f44a9ff 100644
    }
    f.request(f.primary, 'clipboard-sanitized-write', done, details as unknown as Parameters<typeof f.request>[3])
 diff --git a/apps/desktop/tests/platform-view.spec.ts b/apps/desktop/tests/platform-view.spec.ts
-index 76badaa..00b8fc6 100644
+index 76badaafc..00b8fc66e 100644
 --- a/apps/desktop/tests/platform-view.spec.ts
 +++ b/apps/desktop/tests/platform-view.spec.ts
 @@ -46,13 +46,13 @@ afterEach(() => {
@@ -1447,10 +1447,10 @@ index 76badaa..00b8fc6 100644
 2.47.3
 
 
-From 5238c15c1dceee77819c56c3f3a0c16d5ad1471f Mon Sep 17 00:00:00 2001
+From 22f396b86e08adf32a62d53d7ee4d8993f754637 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 21:13:45 +0800
-Subject: [PATCH 08/14] =?UTF-8?q?win81-port:=20keyboard.spec=20=E5=BC=BA?=
+Subject: [PATCH 08/12] =?UTF-8?q?win81-port:=20keyboard.spec=20=E5=BC=BA?=
  =?UTF-8?q?=E8=BD=AC=E5=8A=A0=20unknown=20=E4=B8=AD=E8=BD=AC=EF=BC=88Elect?=
  =?UTF-8?q?ron=2022=20BrowserWindow=20=E7=B1=BB=E5=9E=8B=E9=87=8D=E5=8F=A0?=
  =?UTF-8?q?=E4=B8=8D=E8=B6=B3=EF=BC=89?=
@@ -1463,7 +1463,7 @@ Content-Transfer-Encoding: 8bit
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/apps/desktop/tests/keyboard.spec.ts b/apps/desktop/tests/keyboard.spec.ts
-index 3d435e5..baf7c85 100644
+index 3d435e52f..baf7c85d1 100644
 --- a/apps/desktop/tests/keyboard.spec.ts
 +++ b/apps/desktop/tests/keyboard.spec.ts
 @@ -89,7 +89,7 @@ async function fixture(platform: 'macos' | 'windows' | 'linux' = 'macos') {
@@ -1506,10 +1506,10 @@ index 3d435e5..baf7c85 100644
 2.47.3
 
 
-From e615404feb45b50fdc867aabd4009ea989fd5e11 Mon Sep 17 00:00:00 2001
+From 5d17782295d50613d1469def5fc5f0c7e2ce6dce Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 21:27:16 +0800
-Subject: [PATCH 09/14] =?UTF-8?q?win81-port:=20installFixture=20=E5=BC=BA?=
+Subject: [PATCH 09/12] =?UTF-8?q?win81-port:=20installFixture=20=E5=BC=BA?=
  =?UTF-8?q?=E8=BD=AC=E8=A1=A5=20unknown=20=E4=B8=AD=E8=BD=AC=EF=BC=88?=
  =?UTF-8?q?=E6=9C=80=E5=90=8E=E4=B8=80=E4=B8=AA=E7=B1=BB=E5=9E=8B=E9=94=99?=
  =?UTF-8?q?=E8=AF=AF=EF=BC=89?=
@@ -1522,7 +1522,7 @@ Content-Transfer-Encoding: 8bit
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/apps/desktop/tests/keyboard.spec.ts b/apps/desktop/tests/keyboard.spec.ts
-index baf7c85..d85b8a1 100644
+index baf7c85d1..d85b8a162 100644
 --- a/apps/desktop/tests/keyboard.spec.ts
 +++ b/apps/desktop/tests/keyboard.spec.ts
 @@ -52,7 +52,7 @@ type KeyboardFixture = Omit<ReturnType<typeof installDesktopShortcuts>, 'attach'
@@ -1538,10 +1538,10 @@ index baf7c85..d85b8a1 100644
 2.47.3
 
 
-From 53a5e690a47a2fc61fe5acbca64a22cae5f7d451 Mon Sep 17 00:00:00 2001
+From e6fb3c0b24412cf4adea4b06832625c9e8a9634a Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Thu, 1 Oct 2026 22:22:07 +0800
-Subject: [PATCH 10/14] =?UTF-8?q?win81-port:=20=E8=A1=A5=E5=BB=BA=20electr?=
+Subject: [PATCH 10/12] =?UTF-8?q?win81-port:=20=E8=A1=A5=E5=BB=BA=20electr?=
  =?UTF-8?q?on-builder.config.win81.mjs=20=E5=85=A5=E5=8F=A3?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -1557,7 +1557,7 @@ package-target.ts 的 --config 指向 app 根目录的该入口文件，
 
 diff --git a/apps/desktop/electron-builder.config.win81.mjs b/apps/desktop/electron-builder.config.win81.mjs
 new file mode 100644
-index 0000000..c313407
+index 000000000..c31340735
 --- /dev/null
 +++ b/apps/desktop/electron-builder.config.win81.mjs
 @@ -0,0 +1,5 @@
@@ -1570,10 +1570,10 @@ index 0000000..c313407
 2.47.3
 
 
-From 57b3762b1fe0bba3f353e4dca29718719e78c787 Mon Sep 17 00:00:00 2001
+From 8d4d1be9e2616a174e6a971cf6af1985cd8161d7 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
 Date: Fri, 2 Oct 2026 10:08:59 +0800
-Subject: [PATCH 11/14] =?UTF-8?q?win81-port:=20prepare-dsh=20=E6=94=B9?=
+Subject: [PATCH 11/12] =?UTF-8?q?win81-port:=20prepare-dsh=20=E6=94=B9?=
  =?UTF-8?q?=E7=94=A8=20primary-runtime=20Node=20=E8=B7=91=20pnpm?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -1588,7 +1588,7 @@ Electron 22 内嵌 Node 16.17，pnpm 11.7 要求 >=22.13 直接拒绝。
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/apps/desktop/scripts/prepare-dsh.ts b/apps/desktop/scripts/prepare-dsh.ts
-index 442e017..c39d3e5 100644
+index 442e01757..c39d3e54d 100644
 --- a/apps/desktop/scripts/prepare-dsh.ts
 +++ b/apps/desktop/scripts/prepare-dsh.ts
 @@ -41,7 +41,12 @@ const STORE_ROOT = join(BUILD_ROOT, 'store')
@@ -1609,31 +1609,32 @@ index 442e017..c39d3e5 100644
 2.47.3
 
 
-From c635960cb511ea61a91d60a462dc4790383cd6c1 Mon Sep 17 00:00:00 2001
+From bc1c597bb4d78fa0e655067721f2ce29adbed216 Mon Sep 17 00:00:00 2001
 From: ImSusua <ImSusua@users.noreply.github.com>
-Date: Fri, 2 Oct 2026 11:37:58 +0800
-Subject: [PATCH 12/14] =?UTF-8?q?win81-port:=20payload=20Node=20=E7=BB=9F?=
- =?UTF-8?q?=E4=B8=80=E4=B8=BA=20primary-runtime=20Node=2022.19=EF=BC=88smo?=
- =?UTF-8?q?ke=20=E6=96=AD=E8=A8=80=E5=AF=B9=E9=BD=90=20+=20=E8=BF=90?=
- =?UTF-8?q?=E8=A1=8C=E6=97=B6=E6=8E=A5=E7=BA=BF=EF=BC=89?=
+Date: Sat, 3 Oct 2026 16:00:07 +0800
+Subject: [PATCH 12/12] =?UTF-8?q?win81-port:=20=E5=86=92=E7=83=9F=E5=AE=BF?=
+ =?UTF-8?q?=E4=B8=BB=E5=88=87=E6=8D=A2=20primary=20Node=20+=20descriptor?=
+ =?UTF-8?q?=20=E8=BF=98=E5=8E=9F=E4=B8=8A=E6=B8=B8=20Electron=20=E5=86=85?=
+ =?UTF-8?q?=E5=B5=8C=E7=89=88=E6=9C=AC?=
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-- prepare-runtime.ts：DSH_WIN81 时 versions.json 记录 lock.json 的 Node 版本
-- runtime-payload-smoke.mjs：check.cjs 的 electron 断言随外层运行时自适应
-- main.ts runtimeResources()：打包且内嵌 Node <22 时 Host/pnpm 改用 primary-runtime Node
-- desktop-host index/cli：子进程跟随启动链注入的 DSH_DESKTOP_NODE_EXECUTABLE
+- prepare-runtime.ts：还原上游逻辑（versions.json 记 Electron 内嵌 Node），
+  上轮记 22.19.0 导致 runtime-payload-smoke 顶层断言 16.17.1 != 22.19.0 失败
+- runtime-payload-smoke.mjs checkPnpm：Electron 22 内嵌 Node 16.17.1 跑不动
+  pnpm 11（要求 >=22.13），win81 下宿主改用 primary-runtime Node 22.19，
+  check.cjs 断言随宿主自适应（纯 Node 断言 versions.electron 缺失）
+- checkPty：node-bin 转发目标对齐生产链（primary-runtime Node）
 ---
- apps/desktop-host/src/cli.ts                          |  5 +++--
- apps/desktop-host/src/index.ts                        |  5 +++--
- apps/desktop/scripts/prepare-runtime.ts               | 11 ++++++++---
- apps/desktop/src/main.ts                              |  9 ++++++++-
- apps/desktop/tests/fixtures/runtime-payload-smoke.mjs |  5 ++++-
- 5 files changed, 26 insertions(+), 9 deletions(-)
+ apps/desktop-host/src/cli.ts                  |  5 +++--
+ apps/desktop-host/src/index.ts                |  5 +++--
+ apps/desktop/src/main.ts                      |  9 +++++++-
+ .../tests/fixtures/runtime-payload-smoke.mjs  | 21 ++++++++++++++-----
+ 4 files changed, 30 insertions(+), 10 deletions(-)
 
 diff --git a/apps/desktop-host/src/cli.ts b/apps/desktop-host/src/cli.ts
-index 97a23b8..5bf18fe 100644
+index 97a23b88a..5bf18feee 100644
 --- a/apps/desktop-host/src/cli.ts
 +++ b/apps/desktop-host/src/cli.ts
 @@ -15,11 +15,12 @@ export async function runDesktopCli(runtimeDir: string, supportDir: string): Pro
@@ -1652,7 +1653,7 @@ index 97a23b8..5bf18fe 100644
        },
      },
 diff --git a/apps/desktop-host/src/index.ts b/apps/desktop-host/src/index.ts
-index 4a47a92..86bb050 100644
+index dd8f57c54..f26b0faf3 100644
 --- a/apps/desktop-host/src/index.ts
 +++ b/apps/desktop-host/src/index.ts
 @@ -30,11 +30,12 @@ async function main(): Promise<void> {
@@ -1670,30 +1671,8 @@ index 4a47a92..86bb050 100644
            PATH: `${process.argv[6] ?? ''}${delimiter}${process.env.PATH ?? ''}`,
          },
        },
-diff --git a/apps/desktop/scripts/prepare-runtime.ts b/apps/desktop/scripts/prepare-runtime.ts
-index 1b88f09..3cd14c9 100644
---- a/apps/desktop/scripts/prepare-runtime.ts
-+++ b/apps/desktop/scripts/prepare-runtime.ts
-@@ -40,9 +40,14 @@ async function main(): Promise<void> {
-   rmSync(BUILD_PATHS.electron, { recursive: true, force: true })
-   await packagingStep(process.env.DSH_DESKTOP_PACKAGING_RUN_DIR, 'extract:electron', () => extractZip(archive, { dir: BUILD_PATHS.electron }))
-   const executable = join(BUILD_PATHS.electron, platform === 'win32' ? 'electron.exe' : 'Electron.app/Contents/MacOS/Electron')
--  const nodeVersion = execFileSync(executable, ['-p', 'process.versions.node'], {
--    encoding: 'utf8', env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
--  }).trim()
-+  // [win81-port] Electron 22 内嵌 Node 16.17，但 payload 的 pnpm 宿主已切到
-+  // primary-runtime Node 22.19（见 prepare-dsh 与 lock.json）；versions.json 必须
-+  // 记录实际运行的 Node 版本，否则 runtime-payload-smoke 的版本断言失败。
-+  const nodeVersion = process.env.DSH_WIN81 === '1'
-+    ? (JSON.parse(readFileSync(resolve(import.meta.dirname, '../../../scripts/primary-runtime/lock.json'), 'utf8')) as { nodeVersion: string }).nodeVersion
-+    : execFileSync(executable, ['-p', 'process.versions.node'], {
-+      encoding: 'utf8', env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
-+    }).trim()
-   const macosMinimumVersion = platform === 'darwin' ? execFileSync('/usr/libexec/PlistBuddy',
-     ['-c', 'Print LSMinimumSystemVersion', join(BUILD_PATHS.electron, 'Electron.app', 'Contents', 'Info.plist')], { encoding: 'utf8' }).trim() : undefined
-   rmSync(RUNTIME_ROOT, { recursive: true, force: true })
 diff --git a/apps/desktop/src/main.ts b/apps/desktop/src/main.ts
-index 3dde893..f134a2d 100644
+index 3dde893e6..f134a2d8e 100644
 --- a/apps/desktop/src/main.ts
 +++ b/apps/desktop/src/main.ts
 @@ -150,7 +150,14 @@ interface RuntimeResources {
@@ -1713,55 +1692,55 @@ index 3dde893..f134a2d 100644
    const pnpm = (development ? process.env.DSH_DESKTOP_PNPM_ENTRY : undefined)
      ?? (development ? join(app.getAppPath(), 'node_modules', 'pnpm', 'bin', 'pnpm.mjs')
 diff --git a/apps/desktop/tests/fixtures/runtime-payload-smoke.mjs b/apps/desktop/tests/fixtures/runtime-payload-smoke.mjs
-index d0d7bb9..61a141e 100644
+index d0d7bb94f..47d7a0554 100644
 --- a/apps/desktop/tests/fixtures/runtime-payload-smoke.mjs
 +++ b/apps/desktop/tests/fixtures/runtime-payload-smoke.mjs
-@@ -27,10 +27,13 @@ function checkPnpm() {
+@@ -27,10 +27,18 @@ function checkPnpm() {
    writeFileSync(join(scratch, 'package.json'), JSON.stringify({
      name: 'desktop-node-script-smoke', private: true, scripts: { check: 'node check.cjs' },
    }))
-+  // [win81-port] Electron 22 下 payload Node 为 primary-runtime 的真 node.exe，
-+  // 断言随外层运行时自适应：Electron-as-Node 断言 electron 版本存在，纯 Node 断言不存在。
-+  const expectElectron = process.versions.electron !== undefined
++  // [win81-port] Electron 22 内嵌 Node 16.17.1 跑不动 bundled pnpm 11（要求 >=22.13），
++  // 且其 RUN_AS_NODE 模式不暴露 process.versions.electron；win81 构建下 pnpm 宿主与
++  // 脚本 node（node-bin 转发器同源）改用 primary-runtime 的 Node 22.19。
++  const host = process.env.DSH_WIN81 === '1'
++    ? join(resourcesRuntime, 'primary-runtime', 'dependencies', 'node', 'bin', 'node.exe')
++    : process.execPath
++  // 断言随宿主自适应：Electron 宿主断言 electron 版本存在，纯 Node 宿主断言其缺失。
++  const expectElectron = host === process.execPath && process.versions.electron !== undefined
    writeFileSync(join(scratch, 'check.cjs'), `
  const assert = require('node:assert/strict')
- assert.equal(process.execPath, ${JSON.stringify(process.execPath)})
+-assert.equal(process.execPath, ${JSON.stringify(process.execPath)})
 -assert.ok(process.versions.electron)
++assert.equal(process.execPath, ${JSON.stringify(host)})
 +assert.${expectElectron ? 'ok' : 'equal'}(process.versions.electron, ${expectElectron ? '' : 'undefined'})
  assert.ok(process.execArgv.includes('--expose-internals'))
  assert.equal(typeof require('internal/modules/esm/loader').getOrInitializeCascadedLoader, 'function')
  console.log('desktop-node-script-ok')
--- 
-2.47.3
-
-
-From 1f6aedd0971e5d39681b06e9d644e057747d9f68 Mon Sep 17 00:00:00 2001
-From: ImSusua <ImSusua@users.noreply.github.com>
-Date: Fri, 2 Oct 2026 12:12:15 +0800
-Subject: [PATCH 13/14] =?UTF-8?q?win81-port:=20prepare-runtime=20=E7=94=A8?=
- =?UTF-8?q?=E5=B7=B2=E5=AF=BC=E5=85=A5=E7=9A=84=20join=20=E6=8B=BC=20lock.?=
- =?UTF-8?q?json=20=E8=B7=AF=E5=BE=84=EF=BC=88=E4=BF=AE=20TS2304=EF=BC=89?=
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
----
- apps/desktop/scripts/prepare-runtime.ts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/apps/desktop/scripts/prepare-runtime.ts b/apps/desktop/scripts/prepare-runtime.ts
-index 3cd14c9..0363958 100644
---- a/apps/desktop/scripts/prepare-runtime.ts
-+++ b/apps/desktop/scripts/prepare-runtime.ts
-@@ -44,7 +44,7 @@ async function main(): Promise<void> {
-   // primary-runtime Node 22.19（见 prepare-dsh 与 lock.json）；versions.json 必须
-   // 记录实际运行的 Node 版本，否则 runtime-payload-smoke 的版本断言失败。
-   const nodeVersion = process.env.DSH_WIN81 === '1'
--    ? (JSON.parse(readFileSync(resolve(import.meta.dirname, '../../../scripts/primary-runtime/lock.json'), 'utf8')) as { nodeVersion: string }).nodeVersion
-+    ? (JSON.parse(readFileSync(join(import.meta.dirname, '../../..', 'scripts', 'primary-runtime', 'lock.json'), 'utf8')) as { nodeVersion: string }).nodeVersion
-     : execFileSync(executable, ['-p', 'process.versions.node'], {
-       encoding: 'utf8', env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
-     }).trim()
+@@ -38,10 +46,10 @@ console.log('desktop-node-script-ok')
+   const environment = Object.fromEntries(Object.entries(process.env).filter(([name]) => /^(?:systemroot|windir|comspec)$/iu.test(name)))
+   const systemBin = process.platform === 'win32' ? join(process.env.SystemRoot, 'System32') : '/usr/bin:/bin'
+   // This dependency-free fixture checks script launch, without pnpm's implicit install and update-network check.
+-  const output = execFileSync(process.execPath, ['--expose-internals', pnpm, 'run', 'check'], {
++  const output = execFileSync(host, ['--expose-internals', pnpm, 'run', 'check'], {
+     cwd: scratch, encoding: 'utf8', timeout: 45_000,
+     env: { ...environment, pnpm_config_verify_deps_before_run: 'false',
+-      ELECTRON_RUN_AS_NODE: '1', DSH_DESKTOP_NODE_EXECUTABLE: process.execPath,
++      ELECTRON_RUN_AS_NODE: '1', DSH_DESKTOP_NODE_EXECUTABLE: host,
+       PATH: `${bin}${delimiter}${systemBin}`, HOME: scratch, USERPROFILE: scratch, TMP: scratch, TEMP: scratch, TMPDIR: scratch },
+   })
+   assert.match(output, /desktop-node-script-ok/u)
+@@ -56,7 +64,10 @@ async function checkPty() {
+     /^(?:path|systemroot|windir|comspec|ELECTRON_RUN_AS_NODE)$/iu.test(name)
+   )))
+   Object.assign(env, { HOME: scratch, USERPROFILE: scratch, TMP: scratch, TEMP: scratch, TMPDIR: scratch })
+-  env.DSH_DESKTOP_NODE_EXECUTABLE = process.execPath
++  // [win81-port] 与生产链一致：win81 下 node-bin 转发器指向 primary-runtime Node。
++  env.DSH_DESKTOP_NODE_EXECUTABLE = process.env.DSH_WIN81 === '1'
++    ? join(resourcesRuntime, 'primary-runtime', 'dependencies', 'node', 'bin', 'node.exe')
++    : process.execPath
+   env.PATH = `${join(resourcesRuntime, 'bin')}${delimiter}${env.PATH ?? env.Path ?? ''}`
+   // A Windows GUI executable needs a console-owning shell when launched inside ConPTY.
+   const executable = process.platform === 'win32' ? process.env.ComSpec : process.execPath
 -- 
 2.47.3
 
